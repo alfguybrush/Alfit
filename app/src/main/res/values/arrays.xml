@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="mPlanets">
+        <item>First</item>
+        <item>Second</item>
+        <item>Third</item>
+    </array>
+</resources>

@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="fill_parent"
+    android:weightSum="1">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent">
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="50dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Nombre"
+            android:textAlignment="center"
+            android:id="@+id/textName"
+            android:layout_gravity="center" />
+        <EditText
+            android:layout_width="fill_parent"
+            android:layout_height="50dp"
+            android:id="@+id/EditName"
+
+
+            />
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="50dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textAlignment="center"
+            android:text="Apellidos"
+            android:id="@+id/textSurName"
+            android:layout_gravity="center" />
+        <EditText
+            android:layout_width="fill_parent"
+            android:layout_height="50dp"
+            android:id="@+id/EditSurName"
+
+
+            />
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="50dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Usuario"
+            android:textAlignment="center"
+            android:id="@+id/textUser"
+            android:layout_gravity="center" />
+        <EditText
+            android:layout_width="fill_parent"
+            android:layout_height="50dp"
+            android:id="@+id/EditUser"
+
+
+            />
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="50dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Password"
+            android:textAlignment="center"
+            android:id="@+id/textPass"
+            android:layout_gravity="center" />
+        <EditText
+            android:layout_width="fill_parent"
+            android:layout_height="50dp"
+            android:inputType="textPassword" android:ems="10"
+            android:id="@+id/EditPass"
+            />
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="50dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Estatura (centimetros)"
+            android:textAlignment="center"
+            android:id="@+id/textHigh"
+            android:layout_gravity="center" />
+        <EditText
+            android:layout_width="fill_parent"
+            android:layout_height="50dp"
+            android:id="@+id/EditHigh"
+            />
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="50dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Peso (Kilogramos)"
+            android:textAlignment="center"
+            android:id="@+id/textWeight"
+            android:layout_gravity="center" />
+        <EditText
+            android:layout_width="fill_parent"
+            android:layout_height="50dp"
+            android:id="@+id/EditWeight"
+            />
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="50dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="VO2 máximo"
+            android:textAlignment="center"
+            android:id="@+id/textVO2"
+            android:layout_gravity="center" />
+        <EditText
+            android:layout_width="fill_parent"
+            android:layout_height="50dp"
+            android:id="@+id/EditVO2"
+            />
+
+
+
+
+    </LinearLayout>
+
+
+
+
+</LinearLayout>
