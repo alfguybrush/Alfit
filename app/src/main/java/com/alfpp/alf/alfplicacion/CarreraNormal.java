@@ -24,6 +24,13 @@ import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.text.DecimalFormat;
 import java.util.Locale;
@@ -54,10 +61,13 @@ public class CarreraNormal extends ActionBarActivity
     TextView tvVeloc, tvAltu, tvDist,tvVelocGps;
     TextToSpeech t1;
     AlertDialog.Builder dialogo;
-
+    public GoogleMap map;
+    static final LatLng HAMBURG = new LatLng(53.558, 9.927);
+    static final LatLng KIEL = new LatLng(53.551, 9.993);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         dialogo = new AlertDialog.Builder(this);
         dialogo.setTitle("Atencion");
         dialogo.setMessage("¿Hay una actividad en ejecución desea terminarla?");
@@ -67,22 +77,50 @@ public class CarreraNormal extends ActionBarActivity
                 Stop();
             }
         });
-        dialogo.setNegativeButton("Cancelar",new DialogInterface.OnClickListener(){
+        dialogo.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialogo1, int id){
+            public void onClick(DialogInterface dialogo1, int id) {
                 cancelar();
             }
         });
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drawer);
-        Initiated = false;
+
+        map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map))
+                .getMap();
+        map.setMyLocationEnabled(true);
+        if (map!=null){
+            Marker hamburg = map.addMarker(new MarkerOptions().position(HAMBURG)
+                    .title("Hamburg"));
+            Marker kiel = map.addMarker(new MarkerOptions()
+                    .position(KIEL)
+                    .title("Kiel")
+                    .snippet("Kiel is cool")
+                    .icon(BitmapDescriptorFactory
+                            .fromResource(R.drawable.punto)));
+        }
         mlocManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         mlocListener = new MyLocationListener();
         mlocManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, (LocationListener) mlocListener);
         mlocListener.setMainActivity(CarreraNormal.this);
+        String provider = LocationManager.NETWORK_PROVIDER;
+        Location fastLocation = mlocManager.getLastKnownLocation(provider);
+        latitudIni = fastLocation.getLatitude();
+        longitudIni = fastLocation.getLongitude();
+        LatLng latLng = new LatLng(latitudIni,longitudIni);
+        map.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+
+// Zoom in, animating the camera.
+        map.animateCamera(CameraUpdateFactory.zoomTo(15), 2000, null);
+
+
+        Initiated = false;
+
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
+
         mTitle = getTitle();
         mTitle ="CarreraNormal";
         // Set up the drawer.
@@ -136,36 +174,21 @@ public class CarreraNormal extends ActionBarActivity
         Inicio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String provider = LocationManager.NETWORK_PROVIDER;
-                Location fastLocation = mlocManager.getLastKnownLocation(provider);
-                if(fastLocation.hasAccuracy()) {
-                    latitudIni = fastLocation.getLatitude();
-                    longitudIni = fastLocation.getLongitude();
-                    Initiated = true;
-                    TextSpeech = "Activity Started";
-                    t1.speak(TextSpeech, 0, null, "lectura de Velocidad");
-                    contador = 0;
+                Start();
 
-
-                    //Inicializamos Variables
-                    tvAltu.setText("Altura \n(m):" + "\n" + "0.0");
-                    tvDist.setText("Distancia \n(Km):" + "\n" + "0.0");
-                    tvVeloc.setText("Velocidad Media \n(Km/h):" + "\n" + "0.0");
-                    tvVelocGps.setText("Velocidad \n(Km/h):" + "\n" + "0.0");
-                    velMedia = 0;
-                    distancia = 0;
-
-// Returns last known location, this is the fastest way to get a location fix.
-
-                    //String texto = "Localizaci�n Inicial: Latitud = "+latitudIni+" Longitud = "+longitudIni+" ";
-                    chronometer.setBase(SystemClock.elapsedRealtime());
-                    chronometer.start();
-                }
             }
 
         });
 
     }
+    private void addMapFragment() {
+
+        android.app.FragmentManager manager = getFragmentManager();
+        android.app.Fragment fragment = new MapFragment();
+        manager.beginTransaction().replace(R.id.map,fragment).commit();
+
+    }
+
     public void aceptar(){
         Stop();
     }
@@ -174,7 +197,38 @@ public class CarreraNormal extends ActionBarActivity
 
     }
 
-    public void Stop(){
+
+
+    //FUNCION DE INICIALICACION DE LA CARRERA
+    private void Start() {
+        String provider = mlocManager.NETWORK_PROVIDER;
+        Location fastLocation = mlocManager.getLastKnownLocation(mlocManager.NETWORK_PROVIDER);
+        latitudIni = fastLocation.getLatitude();
+        longitudIni = fastLocation.getLongitude();
+        if(fastLocation.hasAccuracy()) {
+            Initiated = true;
+            TextSpeech = "Activity Started";
+            t1.speak(TextSpeech, 0, null, "lectura de Velocidad");
+            contador = 0;
+
+
+            //Inicializamos Variables
+            tvAltu.setText("Altura \n(m):" + "\n" + "0.0");
+            tvDist.setText("Distancia \n(Km):" + "\n" + "0.0");
+            tvVeloc.setText("Velocidad  \n(Km/h):" + "\n" + "0.0");
+            tvVelocGps.setText("Velocidad \n(Km/h):" + "\n" + "0.0");
+            velMedia = 0;
+            distancia = 0;
+
+// Returns last known location, this is the fastest way to get a location fix.
+
+            //String texto = "Localizaci�n Inicial: Latitud = "+latitudIni+" Longitud = "+longitudIni+" ";
+            chronometer.setBase(SystemClock.elapsedRealtime());
+            chronometer.start();
+        }
+    }
+
+    private void Stop(){
         if(Initiated) {
             TextSpeech = "Activity Stopped";
             t1.speak(TextSpeech, 0, null, "lectura de Velocidad");
@@ -208,6 +262,7 @@ public class CarreraNormal extends ActionBarActivity
         switch (number) {
             case 1:
                 mTitle = getString(R.string.title_section1);
+                ;
                 break;
             case 2:
                 mTitle = getString(R.string.title_section2);
@@ -221,6 +276,19 @@ public class CarreraNormal extends ActionBarActivity
                 break;
         }
     }
+    /*
+    private void MostrarFragment(int position){
+        android.app.Fragment fragment = null;
+        switch (position){
+            case 1:
+                fragment = new Cooper();
+                break;
+        }
+        if (fragment != null){
+            android.app.FragmentManager fragmentManager = getFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.fragmentContainer,fragment).commit();
+        }
+    }*/
 
     public void restoreActionBar() {
         ActionBar actionBar = getSupportActionBar();
@@ -307,7 +375,7 @@ public class CarreraNormal extends ActionBarActivity
     private void ConvertTextToSpeech() {
         // TODO Auto-generated method stub
         //text = et.getText().toString();
-        String text = "It's Over Nine Thousand";
+        String text = "";
         if(text==null||"".equals(text))
         {
             text = "Content not available";
@@ -354,13 +422,20 @@ public class CarreraNormal extends ActionBarActivity
             // Este m�todo se ejecuta cada vez que el GPS recibe nuevas coordenadas
             // debido a la detecci�n de un cambio de ubicacion
             if(Initiated) {
+                TextSpeech="Let's eat an applez";
+                t1.speak(TextSpeech, 0, null,"lectura de Velocidad");
                 if (loc.hasAccuracy()) {
                     String Sdistancia, Svelocidad, svelocidadGPS;
                     String text1, text2;
                     double lat = loc.getLatitude();
                     double lon = loc.getLongitude();
-                    //String Text = "Mi ubicaci�n actual es: " + "\n Lat = "+ loc.getLatitude() + "\n Long = " + loc.getLongitude();
-                    //Calculo de distancia recorrida
+                    LatLng latLng = new LatLng(lat,lon);
+                    Marker Posicion = map.addMarker(new MarkerOptions().position(latLng)
+                            .title("Alf").snippet("Ha HA")
+                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.punto)));
+                    map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,15));
+                                    //String Text = "Mi ubicaci�n actual es: " + "\n Lat = "+ loc.getLatitude() + "\n Long = " + loc.getLongitude();
+                                    //Calculo de distancia recorrida
                     double elapsedMillis = SystemClock.elapsedRealtime() - chronometer.getBase();
                     tiempo = elapsedMillis / 1000;
 
@@ -411,6 +486,7 @@ public class CarreraNormal extends ActionBarActivity
             // Este m�todo se ejecuta cuando el GPS es activado
             //messageTextView.setText("GPS Activado");
         }
+
 
         @Override
         public void onStatusChanged(String provider, int status, Bundle extras) {
