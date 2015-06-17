@@ -9,6 +9,7 @@
     <string name="title_section1">Carrera Normal</string>
     <string name="title_section2">Test Cooper</string>
     <string name="title_section3">Historial</string>
+    <string name="title_section4">Perfil</string>
     <string name="title_activity_carreralf">Carreralf</string>
     <string name="title_activity_prueba">Prueba</string>
     <string name="title_activity_drawer">Drawer</string>
@@ -25,4 +26,7 @@
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_maps">Map</string>
+    <string name="title_activity_sesion_normal">SesionNormal</string>
+    <string name="title_activity_runalftic">Runalftic</string>
+
 </resources>

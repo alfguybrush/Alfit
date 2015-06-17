@@ -25,7 +25,7 @@ public class Alfpp extends Activity implements OnClickListener {
         SigIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View viev) {
-                Intent intent = new Intent(Alfpp.this, SignIn.class);
+                Intent intent = new Intent(Alfpp.this, Navegacion.class);
                 startActivity(intent);
             }
         });
@@ -34,8 +34,9 @@ public class Alfpp extends Activity implements OnClickListener {
         Inicio.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                Intent intent = new Intent(Alfpp.this, CarreraNormal.class);
+                Intent intent = new Intent(Alfpp.this, Runalftic.class);
                 startActivity(intent);
+                finish();
             }
 
         });

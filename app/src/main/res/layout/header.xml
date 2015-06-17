@@ -1,15 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    >
+    android:orientation="vertical">
 
     <ImageView
         android:id="@+id/bg"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
+        android:layout_height="100dp"
+        android:layout_width="fill_parent"
         android:src="@drawable/vector"
         android:scaleType="centerCrop"
-        android:layout_gravity="right|top" />
-</FrameLayout>
+        android:layout_gravity="right|top"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="0dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="0dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Al F. Cantarero"
+        android:textColor="#000000"
+        android:id="@+id/textView3"
+        android:layout_gravity="left|center_vertical"
+        android:layout_marginLeft="20dp"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        android:elevation="1dp"
+        android:layout_centerVertical="true"
+        android:layout_toEndOf="@+id/imageView2"
+        android:layout_marginStart="16dp" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView2"
+        android:src="@drawable/guybrush_2"
+        android:background="@color/primary_light"
+        android:layout_centerVertical="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="17dp"
+        android:elevation="1dp" />
+</RelativeLayout>

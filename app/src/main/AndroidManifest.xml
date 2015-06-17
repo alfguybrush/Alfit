@@ -57,7 +57,7 @@
             android:label="@string/title_activity_prueba" >
         </activity>
         <activity
-            android:name=".CarreraNormal"
+            android:name=".Navegacion"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:label="@string/title_activity_drawer" >
         </activity>
@@ -70,6 +70,16 @@
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="@string/google_maps_key" />
 
+        <activity
+            android:name=".SesionNormal"
+            android:label="@string/title_activity_sesion_normal" >
+        </activity>
+        <activity
+            android:name=".Runalftic"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:label="@string/title_activity_runalftic" >
+        </activity>
     </application>
 
 </manifest>

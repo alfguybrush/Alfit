@@ -1,0 +1,56 @@
+<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" tools:context=".Navegacion"
+    android:background="@color/primary_light"
+    android:rowCount="5"
+    android:columnCount="5">
+
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_row="4"
+        android:layout_column="3"
+        android:id="@+id/RL4">
+
+        <ImageView
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageView"
+
+            android:minHeight="100dp"
+            android:minWidth="100dp"
+            android:maxWidth="100dp"
+            android:maxHeight="100dp"
+            android:src="@drawable/perfil"
+            android:scaleType="centerCrop"
+            android:layout_marginTop="39dp"
+            android:elevation="1dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true" />
+
+
+        <ListView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/listView"
+            android:layout_marginTop="21dp"
+            android:layout_below="@+id/imageView"
+            android:layout_centerHorizontal="true" />
+
+        <ImageButton
+            android:background="@drawable/boton_redondopeq"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageButton"
+            android:elevation="2dp"
+            android:layout_marginBottom="17dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="26dp" />
+
+    </RelativeLayout>
+
+</GridLayout>

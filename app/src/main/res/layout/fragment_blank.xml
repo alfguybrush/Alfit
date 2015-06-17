@@ -1,10 +1,10 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
-    >
+    tools:context="com.alfpp.alf.alfplicacion.Test$PlaceholderFragment">
 
     <FrameLayout android:id="@+id/container" android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -133,21 +133,14 @@
                     style="@style/button_text"/>
 
             </FrameLayout>
-            <RelativeLayout
+
+
+            <fragment
+                android:id="@+id/map"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/map_container">
-
-                <fragment
-                    android:id="@+id/mapa"
-                    android:layout_width="match_parent"
-                    android:layout_height="237dp"
-                    class="com.google.android.gms.maps.MapFragment"
-                    />
-                <!-- The map fragments will go here -->
-            </RelativeLayout>
-
-
+                android:layout_height="237dp"
+                class="com.google.android.gms.maps.MapFragment"
+                />
 
             <Chronometer
                 android:layout_width="match_parent"
