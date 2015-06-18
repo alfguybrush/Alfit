@@ -120,19 +120,10 @@
                             android:gravity="center"
                             android:elevation="1dp" />
 
-                        <Button
-                            android:background="@drawable/button_a"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/icons"
-                            android:text="START"
-                            android:id="@+id/bt_start"
-                            android:layout_gravity="left|bottom"
-                            style="@style/button_text"
-                            android:elevation="1dp" />
-
-                        <Button
-                            android:background="@drawable/button_a"
+                        <ImageButton
+                            android:background="@drawable/boton_redondofondo"
+                            android:src="@drawable/ic_play_dark"
+                            android:scaleType="center"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/icons"
@@ -143,14 +134,28 @@
                             style="@style/button_text"
                             android:elevation="1dp" />
 
-                        <Button
-                            android:background="@drawable/button_a"
+                        <ImageButton
+
+                            android:background="@drawable/boton_redondofondo"
+                            android:src="@drawable/ic_pause_dark"
+                            android:scaleType="center"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Pause"
                             android:id="@+id/bt_pause"
                             android:layout_gravity="center_horizontal|bottom"
                             android:gravity="center"
+                            style="@style/button_text"
+                            android:elevation="1dp" />
+
+                        <ImageButton
+                            android:background="@drawable/boton_redondofondo"
+                            android:src="@drawable/ic_play_dark"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/icons"
+                            android:text="START"
+                            android:id="@+id/bt_start"
+                            android:layout_gravity="center_horizontal|bottom"
                             style="@style/button_text"
                             android:elevation="1dp" />
 

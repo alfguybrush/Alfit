@@ -11,12 +11,14 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.speech.tts.TextToSpeech;
-
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.Chronometer;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -77,6 +79,7 @@ public class Runalftic extends ActionBarActivity
         IniciaLocation();
         IniciaDialogo();
 
+
         df = new DecimalFormat("0.00");
         tvAltu = (TextView) findViewById(R.id.tv_altu);
         tvDist = (TextView) findViewById(R.id.tv_dist);
@@ -85,6 +88,7 @@ public class Runalftic extends ActionBarActivity
         tvVo2 = (TextView) findViewById(R.id.tv_vo2);
         chronometer = (Chronometer) findViewById(R.id.chrono);
         chronometer.setTextSize(60);
+        chronometer.setTextColor(-1);
         t1 = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
             @Override
             public void onInit(int status) {
@@ -104,25 +108,26 @@ public class Runalftic extends ActionBarActivity
         });
 
 
-        Button Pause = (Button) findViewById(R.id.bt_pause);
+        ImageButton Pause = (ImageButton) findViewById(R.id.bt_pause);
         Pause.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 TextSpeech="Activity Paused";
-                t1.speak(TextSpeech, 0, null,"lectura de Velocidad");
+                t1.speak(TextSpeech, 0, null, "lectura de Velocidad");
 
             }
 
         });
-        Button Parada = (Button) findViewById(R.id.bt_stop);
+        ImageButton Parada = (ImageButton) findViewById(R.id.bt_stop);
         Parada.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //Hacer aqui lo de los botones para evitar crear mas variables
                 Stop();
             }
 
         });
-        Button Inicio = (Button) findViewById(R.id.bt_start);
+        ImageButton Inicio = (ImageButton) findViewById(R.id.bt_start);
         Inicio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -131,6 +136,7 @@ public class Runalftic extends ActionBarActivity
             }
 
         });
+        Pause.setVisibility(View.INVISIBLE);
     }
     @Override
     public void onBackPressed()
@@ -151,6 +157,7 @@ public class Runalftic extends ActionBarActivity
         switch (position) {
             case 1:
                 mTitle = getString(R.string.title_section1);
+                intent = new Intent(Runalftic.this, Navegacion.class);
                 break;
             case 2:
                 mTitle = getString(R.string.title_section2);
@@ -343,6 +350,10 @@ public class Runalftic extends ActionBarActivity
             chronometer.setBase(SystemClock.elapsedRealtime());
             chronometer.start();
             Initiated = true;
+        ImageButton Pause = (ImageButton) findViewById(R.id.bt_pause);
+            Pause.setVisibility(View.VISIBLE);
+        ImageButton Start = (ImageButton) findViewById(R.id.bt_start);
+            Start.setVisibility(View.INVISIBLE);
 
 
     }
@@ -355,6 +366,10 @@ public class Runalftic extends ActionBarActivity
             t1.speak(TextSpeech, 0, null, "lectura de Velocidad");
             chronometer.stop();
             Initiated = false;
+            ImageButton Start = (ImageButton) findViewById(R.id.bt_pause);
+            Start.setVisibility(View.VISIBLE);
+            ImageButton Pause = (ImageButton) findViewById(R.id.bt_start);
+            Pause.setVisibility(View.VISIBLE);
         }
 
 

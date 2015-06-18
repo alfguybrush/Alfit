@@ -1,9 +1,9 @@
 <resources>
-    <string name="app_name">Alfplicacion</string>
+    <string name="app_name">QAlf</string>
 
     <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
-    <string name="title_activity_sign_in">SignIn</string>
+    <string name="action_settings">Menu</string>
+    <string name="title_activity_sign_in">Registro</string>
     <string name="title_activity_carrera">Carrera</string>
 
     <string name="title_section1">Carrera Normal</string>
@@ -17,7 +17,7 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
-    <string name="action_example">Example action</string>
+    <string name="action_example">Cerrar Sesion</string>
     <string name="title_activity_test">Test</string>
     <string name="google_maps_key" translatable="false" templateMergeStrategy="preserve">
         AIzaSyCa2Ki1yaB7li5u7krEOZ-h3lUB53tOj0s
@@ -28,5 +28,6 @@
     <string name="title_activity_maps">Map</string>
     <string name="title_activity_sesion_normal">SesionNormal</string>
     <string name="title_activity_runalftic">Runalftic</string>
+    <string name="title_activity_main">MainActivity</string>
 
 </resources>
