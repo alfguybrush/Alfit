@@ -13,7 +13,7 @@ public class BaseDatosAlfpp extends SQLiteOpenHelper{
     private static final int VERSION_BASEDATOS = 1;
 
     //Nombre del Archivo de Base de Datos
-    private static final String NOMBRE_BASEDATOS = "qalf1.db";
+    private static final String NOMBRE_BASEDATOS = "qalfV1.0.db";
 
     //Sentencia SQL creacion Tabla Usuario
 
@@ -24,14 +24,14 @@ public class BaseDatosAlfpp extends SQLiteOpenHelper{
     @Override
     public void onCreate(SQLiteDatabase db){
 
-        db.execSQL("CREATE TABLE usuario(_id INTEGER PRIMARY KEY AUTOINCREMENT, sexo INTEGER, nombre TEXT, apellidos TEXT, edad INTEGER, peso DOUBLE, usuario TEXT,password TEXT) ");
+        db.execSQL("CREATE TABLE usuario(_id INTEGER PRIMARY KEY AUTOINCREMENT, sexo INTEGER, nombre TEXT, apellidos TEXT, edad INTEGER, peso DOUBLE,altura DOUBLE, usuario TEXT,password TEXT, Vo2 DOUBLE) ");
     }
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion){
-        db.execSQL("drop table if exists users");
-        db.execSQL("CREATE TABLE users(_id INTEGER PRIMARY KEY AUTOINCREMENT,sexo INTEGER, nombre TEXT, apellidos TEXT, edad INTEGER, peso DOUBLE, usuario TEXT,password TEXT) ");
+        db.execSQL("drop table if exists usuario");
+        db.execSQL("CREATE TABLE users(_id INTEGER PRIMARY KEY AUTOINCREMENT,sexo INTEGER, nombre TEXT, apellidos TEXT, edad INTEGER, peso DOUBLE, altura DOUBLE, usuario TEXT,password TEXT) ");
     }
-    public boolean insertaUsuario(String nombre, String apellidos, int edad, double peso, String user, String pass,int Sexo){
+    public boolean insertaUsuario(String nombre, String apellidos, int edad, double peso,double altura, String user, String pass,int Sexo){
         int idUsuario=0;
         SQLiteDatabase db = getWritableDatabase();
         boolean valido;
@@ -42,8 +42,10 @@ public class BaseDatosAlfpp extends SQLiteOpenHelper{
             values.put("apellidos",apellidos);
             values.put("edad",edad);
             values.put("peso",peso);
+            values.put("altura",altura);
             values.put("usuario",user);
             values.put("password",pass);
+            values.put("Vo2",0.0);
             idUsuario = (int) db.insert("usuario",null,values);
             valido = true;
         }else{
@@ -52,15 +54,19 @@ public class BaseDatosAlfpp extends SQLiteOpenHelper{
         db.close();
         return valido;
     }
-    public void modificaUsuario(int id,String nombre, String apellidos, int edad){
+    //Sexo 0 = Homnbre , 1 = Mujer;
+    public void modificaUsuario(int id,String nombre,String apellidos,String user, String pass,int Sexo, int edad, double peso, double altura){
         SQLiteDatabase db = getWritableDatabase();
-
-            ContentValues valores = new ContentValues();
-            valores.put("nombre",nombre);
-            valores.put("apellidos",apellidos);
-            valores.put("edad", edad);
-
-            db.update("users", valores, "_id=" + id, null);
+        ContentValues values = new ContentValues();
+        values.put("sexo",Sexo);
+        values.put("nombre",nombre);
+        values.put("apellidos",apellidos);
+        values.put("edad",edad);
+        values.put("peso",peso);
+        values.put("altura",altura);
+        values.put("usuario",user);
+        values.put("password",pass);
+        db.update("usuario", values, "_id=" + id, null);
 
         db.close();
     }
@@ -69,6 +75,7 @@ public class BaseDatosAlfpp extends SQLiteOpenHelper{
         db.delete("usuarios", "_id=" + id, null);
     }
 
+    //////********Operaciones con Usuario***************///
     public String getUsuario(String id){
         SQLiteDatabase db = getWritableDatabase();
         String user = "";
@@ -83,6 +90,121 @@ public class BaseDatosAlfpp extends SQLiteOpenHelper{
         }
         return user;
     }
+    //////********Operaciones con Nombre***************///
+    public String getNombre(String id){
+        SQLiteDatabase db = getWritableDatabase();
+        String name = "";
+        String[] args = new String[] {id};
+        Cursor c = db.rawQuery(" SELECT nombre FROM usuario WHERE _id=? ", args);
+        if (c.moveToFirst()) {
+            //Recorremos el cursor hasta que no haya más registros
+            do {
+                name = c.getString(0);
+            } while(c.moveToNext());
+
+        }
+        return name;
+    }
+    //////********Operaciones con Apellido***************///
+    public String getApellido(String id){
+        SQLiteDatabase db = getWritableDatabase();
+        String name = "";
+        String[] args = new String[] {id};
+        Cursor c = db.rawQuery(" SELECT apellidos FROM usuario WHERE _id=? ", args);
+        if (c.moveToFirst()) {
+            //Recorremos el cursor hasta que no haya más registros
+            do {
+                name = c.getString(0);
+            } while(c.moveToNext());
+
+        }
+        return name;
+    }
+    //////********Operaciones con Peso***************///
+    public double getPeso(String id){
+        SQLiteDatabase db = getWritableDatabase();
+        double weight = 0;
+        String[] args = new String[] {id};
+        Cursor c = db.rawQuery(" SELECT peso FROM usuario WHERE _id=? ", args);
+        if (c.moveToFirst()) {
+            //Recorremos el cursor hasta que no haya más registros
+            do {
+                weight = c.getDouble(0);
+            } while(c.moveToNext());
+
+        }
+        return weight;
+    }
+
+    //////********Operaciones con Altura***************///
+    public double getAltura(String id){
+        SQLiteDatabase db = getWritableDatabase();
+        double weight = 0;
+        String[] args = new String[] {id};
+        Cursor c = db.rawQuery(" SELECT altura FROM usuario WHERE _id=? ", args);
+        if (c.moveToFirst()) {
+            //Recorremos el cursor hasta que no haya más registros
+            do {
+                weight = c.getDouble(0);
+            } while(c.moveToNext());
+
+        }
+        return weight;
+    }
+
+    //////********Operaciones con Edad***************///
+    public int getEdad(String id){
+        SQLiteDatabase db = getWritableDatabase();
+        int age = 0;
+        String[] args = new String[] {id};
+        Cursor c = db.rawQuery(" SELECT edad FROM usuario WHERE _id=? ", args);
+        if (c.moveToFirst()) {
+            //Recorremos el cursor hasta que no haya más registros
+            do {
+                age = c.getInt(0);
+            } while(c.moveToNext());
+
+        }
+        return age;
+    }
+
+    //////********Operaciones con Sexo***************///
+    public int getSexo(String id){
+        SQLiteDatabase db = getWritableDatabase();
+        int genre = 0;
+        String[] args = new String[] {id};
+        Cursor c = db.rawQuery(" SELECT edad FROM usuario WHERE _id=? ", args);
+        if (c.moveToFirst()) {
+            //Recorremos el cursor hasta que no haya más registros
+            do {
+                genre = c.getInt(0);
+            } while(c.moveToNext());
+
+        }
+        return genre;
+    }
+
+    //////********Operaciones con Vo2***************///
+    public void setVo2(String id, double vo2){
+        SQLiteDatabase db = getWritableDatabase();
+        String[] args = new String[] {Double.toString(vo2),id};
+        Cursor c = db.rawQuery(" UPDATE usuario SET Vo2=? WHERE Id=? ", args);
+    }
+    public double getVo2(String id){
+        SQLiteDatabase db = getWritableDatabase();
+        double vo2 = 0;
+        String[] args = new String[] {id};
+        Cursor c = db.rawQuery(" SELECT vo2 FROM usuario WHERE _id=? ", args);
+        if (c.moveToFirst()) {
+            //Recorremos el cursor hasta que no haya más registros
+            do {
+                vo2 = c.getInt(0);
+            } while(c.moveToNext());
+
+        }
+        return vo2;
+    }
+
 
 
 }

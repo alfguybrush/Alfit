@@ -322,10 +322,10 @@ public class Runalftic extends ActionBarActivity
         double longprincipio = fastLocation.getLongitude();
         LatLng latLng = new LatLng(latprincipio,longprincipio);
         map.setMapType(GoogleMap.MAP_TYPE_HYBRID);
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 18));
 
 // Zoom in, animating the camera.
-        map.animateCamera(CameraUpdateFactory.zoomTo(15), 2000, null);
+        map.animateCamera(CameraUpdateFactory.zoomTo(18), 2000, null);
     }
 
 
@@ -511,7 +511,7 @@ public class Runalftic extends ActionBarActivity
                             Marker Posicion = map.addMarker(new MarkerOptions().position(latLng)
                                     .title("Alf").snippet("Ha HA")
                                     .icon(BitmapDescriptorFactory.fromResource(R.drawable.punto)));
-                            map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+                            map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 18));
                             //String Text = "Mi ubicaci?n actual es: " + "\n Lat = "+ loc.getLatitude() + "\n Long = " + loc.getLongitude();
                             //Calculo de distancia recorrida
                             double elapsedMillis = SystemClock.elapsedRealtime() - chronometer.getBase();

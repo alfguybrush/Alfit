@@ -3,7 +3,7 @@
     android:layout_height="match_parent" tools:context=".Navegacion"
     android:background="@color/primary_light"
     android:rowCount="5"
-    android:columnCount="5">
+    android:columnCount="6">
 
 
 
@@ -67,13 +67,25 @@
                     android:id="@+id/tv_usuario_perfil"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"/>
+                    android:layout_marginBottom="10dp"
+                    android:elegantTextHeight="true"
+                    android:singleLine="false"
+                    android:textStyle="bold" />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="Medium Text"
                     android:id="@+id/tv__nombre_perfil"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="Medium Text"
+                    android:id="@+id/tv_sexo_perfil"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="10dp"/>
@@ -105,10 +117,23 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="10dp"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="Medium Text"
+                    android:id="@+id/tv_vo2_perfil"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"/>
 
             </LinearLayout>
         </FrameLayout>
 
     </RelativeLayout>
+
+    <requestFocus
+        android:layout_row="4"
+        android:layout_column="5" />
 
 </GridLayout>
