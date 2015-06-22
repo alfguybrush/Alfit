@@ -65,7 +65,8 @@ public class Runalftic extends ActionBarActivity
         setContentView(R.layout.activity_runalftic);
         Bundle bundle = getIntent().getExtras();
         TextView nombre = (TextView) findViewById(R.id.tv_nombre_header);
-        nombre.setText(bundle.getString("Usuario"));
+        nombre.setText(bundle.getString("Usuario","Defecto"));
+        //mNavigationDrawerFragment.setArguments(); PROBAR LUEGO
 
         latitudIni = 0;
         longitudIni=0;

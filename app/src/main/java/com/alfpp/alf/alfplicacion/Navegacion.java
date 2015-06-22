@@ -56,6 +56,7 @@ public class Navegacion extends ActionBarActivity
     public void onBackPressed()
     {
         Intent intent = new Intent(Navegacion.this, Runalftic.class);
+        intent.putExtra("Usuario","defecto");
         startActivity(intent);
         finish();
 
@@ -126,7 +127,9 @@ public class Navegacion extends ActionBarActivity
                 break;
             case 1://CarreraNormal
                 Intent intent = new Intent(Navegacion.this, Runalftic.class);
+                intent.putExtra("Usuario","defecto");
                 startActivity(intent);
+
                 finish();
                 break;
 
@@ -148,6 +151,9 @@ public class Navegacion extends ActionBarActivity
                 break;
         }
         if (fragment != null){
+            Bundle bundle = new Bundle();
+            bundle.putString("id","1");
+            fragment.setArguments(bundle);
             android.app.FragmentManager fragmentManager = getFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.containerdrawer,fragment).commit();
 
