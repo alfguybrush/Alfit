@@ -13,17 +13,29 @@ import android.widget.TextView;
 public class MainActivity extends Activity implements View.OnClickListener {
 
     TextView titulo;
+    BaseDatosAlfpp BD;
+    String user;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        BD = new BaseDatosAlfpp(getApplicationContext());
         ImageButton Inicio = (ImageButton) findViewById(R.id.imageButton);
         Inicio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, Runalftic.class);
-                startActivity(intent);
-                finish();
+
+                user = BD.getUsuario("1");
+                if (user =="") {
+                    Intent intent = new Intent(MainActivity.this, SignIn.class);
+                    startActivity(intent);
+                    finish();
+                }else{
+                    Intent intent = new Intent(MainActivity.this, Runalftic.class);
+                    intent.putExtra("Usuario",user);
+                    startActivity(intent);
+                    finish();
+                }
             }
 
         });

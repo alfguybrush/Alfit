@@ -4,8 +4,8 @@
         <shape xmlns:android="http://schemas.android.com/apk/res/android"
             android:shape="rectangle"
             >
-            <solid android:color="@color/accent"></solid>
-            
+
+
             <size android:width="140dp"        android:height="140dp"></size>
             <corners android:radius="70dp"></corners>
 

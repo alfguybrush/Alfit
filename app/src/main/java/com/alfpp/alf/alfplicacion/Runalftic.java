@@ -40,7 +40,7 @@ public class Runalftic extends ActionBarActivity
     String TextSpeech;
     double latitudIni,longitudIni,distancia,velMedia, tiempo;
     private Chronometer chronometer;
-    boolean Initiated;
+    boolean Initiated, Paused;
     DecimalFormat df;
     LocationManager mlocManager;
     MyLocationListener mlocListener;
@@ -55,29 +55,39 @@ public class Runalftic extends ActionBarActivity
     static final LatLng HAMBURG = new LatLng(53.558, 9.927);
     static final LatLng KIEL = new LatLng(53.551, 9.993);
     boolean primero;
+    long timeWhenStopped;
+    Locale locSpanish;
     //******************FIN INICIALIZACION VARIABLES******************************//
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_runalftic);
+        Bundle bundle = getIntent().getExtras();
+        TextView nombre = (TextView) findViewById(R.id.tv_nombre_header);
+        nombre.setText(bundle.getString("Usuario"));
+
         latitudIni = 0;
         longitudIni=0;
         distancia = 0;
         Initiated = false;
         lock = false;
+        timeWhenStopped = 0;
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
         mTitle = getTitle();
 
         // Set up the drawer.
+
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
-                (DrawerLayout) findViewById(R.id.drawer_layout));
+                (DrawerLayout) findViewById(R.id.drawer_layout2));
+        mNavigationDrawerFragment.selectItem(1);
         IniciaMapa();
         IniciaLocation();
         IniciaDialogo();
+
 
 
         df = new DecimalFormat("0.00");
@@ -89,11 +99,12 @@ public class Runalftic extends ActionBarActivity
         chronometer = (Chronometer) findViewById(R.id.chrono);
         chronometer.setTextSize(60);
         chronometer.setTextColor(-1);
+        locSpanish= new Locale("spa", "ESP");
         t1 = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
             @Override
             public void onInit(int status) {
                 if(status == TextToSpeech.SUCCESS){
-                    int result=t1.setLanguage(Locale.US);
+                    int result=t1.setLanguage(locSpanish);
                     if(result==TextToSpeech.LANG_MISSING_DATA ||
                             result==TextToSpeech.LANG_NOT_SUPPORTED){
                         // Log.e("error", "This Language is not supported");
@@ -107,36 +118,70 @@ public class Runalftic extends ActionBarActivity
             }
         });
 
+        //***********CONFIGURACION BOTONES******************//
+        final ImageButton Resume = (ImageButton) findViewById(R.id.bt_resume);
+        final ImageButton Parada = (ImageButton) findViewById(R.id.bt_stop);
+        final ImageButton Pause = (ImageButton) findViewById(R.id.bt_pause);
+        final ImageButton Inicio = (ImageButton) findViewById(R.id.bt_start);
+        Inicio.setVisibility(View.VISIBLE);
+        Pause.setVisibility(View.INVISIBLE);
+        Resume.setVisibility(View.INVISIBLE);
 
-        ImageButton Pause = (ImageButton) findViewById(R.id.bt_pause);
-        Pause.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                TextSpeech="Activity Paused";
-                t1.speak(TextSpeech, 0, null, "lectura de Velocidad");
 
-            }
-
-        });
-        ImageButton Parada = (ImageButton) findViewById(R.id.bt_stop);
-        Parada.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //Hacer aqui lo de los botones para evitar crear mas variables
-                Stop();
-            }
-
-        });
-        ImageButton Inicio = (ImageButton) findViewById(R.id.bt_start);
         Inicio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Inicio.setVisibility(View.INVISIBLE);
+                Pause.setVisibility(View.VISIBLE);
+                Resume.setVisibility(View.INVISIBLE);
                 Start();
 
             }
 
         });
-        Pause.setVisibility(View.INVISIBLE);
+
+
+        Pause.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Inicio.setVisibility(View.INVISIBLE);
+                Pause.setVisibility(View.INVISIBLE);
+                Resume.setVisibility(View.VISIBLE);
+
+                Paused();
+
+
+            }
+
+        });
+        Resume.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Inicio.setVisibility(View.INVISIBLE);
+                Pause.setVisibility(View.VISIBLE);
+                Resume.setVisibility(View.INVISIBLE);
+                Resume();
+
+
+            }
+
+        });
+
+        Parada.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                //Hacer aqui lo de los botones para evitar crear mas variables
+                Inicio.setVisibility(View.VISIBLE);
+                Pause.setVisibility(View.INVISIBLE);
+                Resume.setVisibility(View.INVISIBLE);
+                Stop();
+            }
+
+        });
+
+
+
     }
     @Override
     public void onBackPressed()
@@ -147,48 +192,81 @@ public class Runalftic extends ActionBarActivity
         else{
             super.onBackPressed();
             this.finish();
+
         }
 
     }
 
     @Override
     public void onNavigationDrawerItemSelected(int position) {
+        MostrarFragment(position);
+
+    }
+    private void MostrarFragment(int position){
         Intent intent=null;
         switch (position) {
-            case 1:
+            case 0:
+
                 mTitle = getString(R.string.title_section1);
                 intent = new Intent(Runalftic.this, Navegacion.class);
+                intent.putExtra("Pantalla", "Sus Castas toas");
+                intent.putExtra("Opcion", 0);
+
                 break;
+
+            case 1:
+
+                break;
+
             case 2:
-                mTitle = getString(R.string.title_section2);
-                 intent = new Intent(Runalftic.this, Navegacion.class);
-                finish();
+                mTitle = getString(R.string.title_section1);
+                intent = new Intent(Runalftic.this, Navegacion.class);
+                intent.putExtra("Pantalla", "Cooper");
+                intent.putExtra("Opcion", 2);
 
                 break;
+
+
             case 3:
-                mTitle = getString(R.string.title_section3);
-                 intent = new Intent(Runalftic.this, Navegacion.class);
-                finish();
-
+                mTitle = getString(R.string.title_section4);
+                intent = new Intent(Runalftic.this, Navegacion.class);
+                intent.putExtra("Pantalla", "Historial");
+                intent.putExtra("Opcion", 3);
                 break;
+            case 4:
+                mTitle = getString(R.string.title_section4);
+                intent = new Intent(Runalftic.this, Navegacion.class);
+                intent.putExtra("Pantalla", "Perfil");
+                intent.putExtra("selected_navigation_drawer_position", 4);
+                break;
+
         }
         if(intent!=null){
             startActivity(intent);
+            mlocManager.removeUpdates(mlocListener);
+            finish();
         }
+
 
     }
 
     public void onSectionAttached(int number) {
+        Intent intent=null;
         switch (number) {
             case 1:
                 mTitle = getString(R.string.title_section1);
+
                 break;
             case 2:
                 mTitle = getString(R.string.title_section2);
+
                 break;
             case 3:
                 mTitle = getString(R.string.title_section3);
                 break;
+        }
+        if(intent!=null){
+            startActivity(intent);
         }
     }
 
@@ -331,7 +409,7 @@ public class Runalftic extends ActionBarActivity
     private void Start(){
         //PRIMERAVEZ QUE SE INICIALIZAN LAS latitud
             primero =true;
-            TextSpeech = "Activity Started";
+            TextSpeech = "Actividad Iniciada";
             t1.speak(TextSpeech, 0, null, "lectura de Velocidad");
             contador = 0;
 
@@ -349,27 +427,22 @@ public class Runalftic extends ActionBarActivity
             //String texto = "Localizaci?n Inicial: Latitud = "+latitudIni+" Longitud = "+longitudIni+" ";
             chronometer.setBase(SystemClock.elapsedRealtime());
             chronometer.start();
+            Paused = false;
             Initiated = true;
-        ImageButton Pause = (ImageButton) findViewById(R.id.bt_pause);
-            Pause.setVisibility(View.VISIBLE);
-        ImageButton Start = (ImageButton) findViewById(R.id.bt_start);
-            Start.setVisibility(View.INVISIBLE);
+            timeWhenStopped = 0;
 
 
     }
 
     //FUNCION FINALIZACION DE CARRERA
     private void Stop(){
-        if(Initiated) {
-            TextSpeech = "Activity Stopped";
+        if(Initiated || Paused) {
+            TextSpeech = "Actividad Finalizada Jodido Garulo";
             distancia = 0;
             t1.speak(TextSpeech, 0, null, "lectura de Velocidad");
             chronometer.stop();
+            Paused = false;
             Initiated = false;
-            ImageButton Start = (ImageButton) findViewById(R.id.bt_pause);
-            Start.setVisibility(View.VISIBLE);
-            ImageButton Pause = (ImageButton) findViewById(R.id.bt_start);
-            Pause.setVisibility(View.VISIBLE);
         }
 
 
@@ -378,14 +451,29 @@ public class Runalftic extends ActionBarActivity
 
 
 
+    private void Paused(){
+        Paused = true;
+        TextSpeech="Activity Paused";
+        t1.speak(TextSpeech, 0, null, "lectura de Velocidad");
+        //Al parar se vuelve a tomar coordenadas de origen
+        primero = true;
+        timeWhenStopped = chronometer.getBase() - SystemClock.elapsedRealtime();
+        chronometer.stop();
+    }
+
+    private void Resume(){
+        Paused = false;
+        TextSpeech="Activity Resumed";
+        t1.speak(TextSpeech, 0, null, "lectura de Velocidad");
+        chronometer.setBase(SystemClock.elapsedRealtime() + timeWhenStopped);
+        chronometer.start();
+
+    }
 
 
 
 
-
-
-
-    public class MyLocationListener implements LocationListener {
+    private class MyLocationListener implements LocationListener {
         Runalftic activityRun;
         public Activity getMainActivity() {
             return activityRun;
@@ -399,7 +487,7 @@ public class Runalftic extends ActionBarActivity
         public void onLocationChanged(Location loc) {
             // Este m?todo se ejecuta cada vez que el GPS recibe nuevas coordenadas
             // debido a la detecci?n de un cambio de ubicacion
-            if(Initiated) {
+            if(Initiated && !Paused) {
                 if (lock) {
                     TextSpeech = "Activity Paused";
                     t1.speak(TextSpeech, 0, null, "lectura de Velocidad");

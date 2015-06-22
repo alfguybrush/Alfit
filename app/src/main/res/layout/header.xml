@@ -23,7 +23,7 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Al F. Cantarero"
         android:textColor="#000000"
-        android:id="@+id/textView3"
+        android:id="@+id/tv_nombre_header"
         android:layout_gravity="left|center_vertical"
         android:layout_marginLeft="20dp"
         android:textSize="20dp"

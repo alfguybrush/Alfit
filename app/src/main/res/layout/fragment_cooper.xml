@@ -2,118 +2,56 @@
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent" tools:context="com.alfpp.alf.alfplicacion.Cooper">
 
-    <FrameLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center_horizontal|top"
-        android:textAlignment="center"
-        android:id="@+id/FL1"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:layout_marginBottom="5dp">
+        android:id="@+id/RLCooper">
 
+        <Chronometer
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/chrono_cooper"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="52dp" />
 
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="301dp"
-            android:layout_gravity="center_horizontal|bottom"
-            android:textAlignment="center">
+        <ImageButton
+            android:background="@drawable/boton_redondofondo"
+            android:src="@drawable/ic_play_dark"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/bt_start_cooper"
+            android:layout_marginBottom="77dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Distancia"
-                android:textAlignment="center"
-                android:textColor="@color/primary_text"
-                android:id="@+id/tv_dist"
-                android:layout_gravity="left|top"
-                android:gravity="center"
-                />
+        <ImageButton
+            android:background="@drawable/boton_redondofondo"
+            android:src="@drawable/ic_pause_dark"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/bt_stop_cooper"
+            android:layout_marginBottom="77dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textAlignment="center"
-                android:text="Velocidad"
-                android:textColor="@color/primary_text"
-                android:id="@+id/tv_veloc"
-                android:layout_gravity="center_horizontal|top"
-                android:gravity="center"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Velocidad Media "
+            android:id="@+id/tv_veloc_cooper"
+            android:layout_centerVertical="true"
+            android:layout_toStartOf="@+id/bt_start_cooper" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Altura"
-                android:textAlignment="center"
-                android:id="@+id/tv_altu"
-                android:layout_gravity="center_vertical|right"
-                android:gravity="center"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Vo2"
-                android:id="@+id/tv_vo2"
-                android:textAlignment="center"
-                android:layout_gravity="left|center_vertical"
-                android:gravity="center"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Calorias"
-                android:textColor="@color/primary_text"
-                android:id="@+id/tv_calo"
-                android:textAlignment="center"
-                android:layout_gravity="center"
-                android:gravity="center"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Velocidad"
-                android:textColor="@color/primary_text"
-                android:id="@+id/tv_velocGps"
-                android:textAlignment="center"
-                android:layout_gravity="center_vertical|right|top"
-                android:gravity="center"/>
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/icons"
-                android:background="@color/accent"
-                android:text="Cooper"
-                android:id="@+id/bt_start"
-                android:layout_gravity="left|bottom" />
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/icons"
-                android:background="@color/accent"
-                android:text="STOP"
-                android:id="@+id/bt_stop"
-                android:layout_gravity="right|bottom"
-                android:gravity="center"/>
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/icons"
-                android:background="@color/accent"
-                android:text="Pause"
-                android:id="@+id/bt_pause"
-                android:layout_gravity="center_horizontal|bottom"
-                android:gravity="center"/>
-        </FrameLayout>
-
-    </FrameLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Distancia"
+            android:id="@+id/tv_dist_cooper"
+            android:layout_alignTop="@+id/tv_veloc_cooper"
+            android:layout_toEndOf="@+id/bt_start_cooper" />
+    </RelativeLayout>
 </FrameLayout>

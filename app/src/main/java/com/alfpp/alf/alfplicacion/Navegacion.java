@@ -31,17 +31,25 @@ public class Navegacion extends ActionBarActivity
         setContentView(R.layout.activity_drawer);
         Toast toast;
         toast = Toast.makeText(getApplicationContext(),"1", Toast.LENGTH_SHORT);
-        toast.show();
+        //toast.show();
+
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
         mTitle = getTitle();
         mTitle ="Principal";
         // Set up the drawer.
+        Bundle bundle = getIntent().getExtras();
+        mNavigationDrawerFragment.selectItem(bundle.getInt("Opcion"));
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
+
+
         Toast toast1;
         toast1 = Toast.makeText(getApplicationContext(),"1", Toast.LENGTH_SHORT);
+        //toast1.show();
+
+        toast1 = Toast.makeText(getApplicationContext(),bundle.getString("Pantalla"), Toast.LENGTH_SHORT);
         toast1.show();
     }
     @Override
@@ -65,7 +73,7 @@ public class Navegacion extends ActionBarActivity
     public void onNavigationDrawerItemSelected(int position) {
         // update the main content by replacing fragments
 
-        MostrarFragment(position + 1);
+        MostrarFragment(position );
 
     }
 
@@ -111,23 +119,28 @@ public class Navegacion extends ActionBarActivity
         android.app.Fragment fragment = null;
         Toast toast1;
         switch (position){
-            case 1://CabeceraPerfil
+            case 0://CabeceraPerfil
                 fragment = new Perfil();
                 toast1 = Toast.makeText(getApplicationContext(),"Perfil", Toast.LENGTH_SHORT);
-                toast1.show();
+                //toast1.show();
                 break;
-            case 2://CarreraNormal
+            case 1://CarreraNormal
                 Intent intent = new Intent(Navegacion.this, Runalftic.class);
                 startActivity(intent);
                 finish();
                 break;
-            case 3://TestCooper
-                //fragment = new Sesion(this);
+
+            case 2://TestCooper
+                fragment = new Cooper();
                 toast1 = Toast.makeText(getApplicationContext(),"Sesion", Toast.LENGTH_SHORT);
-                toast1.show();
+                //toast1.show();
                 break;
+
+            case 3:
+                break;
+
             case 4://Historial
-                //fragment = new BlankFragment();
+                fragment = new ItemFragment();
 
             break;
             case 5://PERFIL->Acerca De

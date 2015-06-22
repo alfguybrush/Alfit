@@ -2,6 +2,7 @@ package com.alfpp.alf.alfplicacion;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -34,6 +35,8 @@ public class Alfpp extends Activity implements OnClickListener {
         Inicio.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
+                BaseDatosAlfpp BD = new BaseDatosAlfpp(getApplicationContext());
+
                 Intent intent = new Intent(Alfpp.this, Runalftic.class);
                 startActivity(intent);
                 finish();

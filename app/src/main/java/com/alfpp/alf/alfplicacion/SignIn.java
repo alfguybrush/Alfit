@@ -1,20 +1,21 @@
 package com.alfpp.alf.alfplicacion;
 
 import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.util.Calendar;
-import java.util.TimeZone;
 
 
 public class SignIn extends ActionBarActivity {
+    int Sexo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +28,14 @@ public class SignIn extends ActionBarActivity {
             @Override
             public void onClick(View view) {
                 String Nombre,Apellidos, usuario, password;
+                int anio, edad, anionac;
+                double peso;
+                Spinner spinner;
+                Sexo = 0;
+                spinner = (Spinner)findViewById(R.id.SpinnerSex);
+                String SexoString = spinner.getSelectedItem().toString();
+                Toast toast = Toast.makeText(getApplicationContext(), SexoString, Toast.LENGTH_SHORT);
+                toast.show();
 
                 EditText text = (EditText)findViewById(R.id.editName);
                 Nombre = text.getText().toString();
@@ -38,28 +47,28 @@ public class SignIn extends ActionBarActivity {
                 usuario = text.getText().toString();
 
                  text = (EditText)findViewById(R.id.editFecha);
-                int anionac =Integer.parseInt(text.getText().toString()) ;
+                anionac =Integer.parseInt(text.getText().toString()) ;
 
                 text = (EditText)findViewById(R.id.editPeso);
-                double weight = Double.parseDouble(text.getText().toString());
+                peso = Double.parseDouble(text.getText().toString());
 
                 text = (EditText)findViewById(R.id.editPass);
                 password = text.getText().toString();
 
                 //Con el año de nacimiento y la fecha actual sacamos la edad (aprox)
                 final Calendar c = Calendar.getInstance();
-                int anio = c.get(Calendar.YEAR);
-                int edad = anio - anionac;
+                anio = c.get(Calendar.YEAR);
+                edad = anio - anionac;
                 //Introduccion en la Base de Datos.
 
                 BaseDatosAlfpp BD = new BaseDatosAlfpp(getApplicationContext());
 
-                BD.insertaUsuario(Nombre, Apellidos, edad, weight,usuario,password);
+                BD.insertaUsuario(Nombre, Apellidos, edad, peso ,usuario,password,Sexo);
 
-                Toast toast = Toast.makeText(getApplicationContext(), "Usuario Registrado", Toast.LENGTH_SHORT);
-                toast.show();
-                Intent intent = new Intent(SignIn.this, Alfpp.class);
+
+                Intent intent = new Intent(SignIn.this, MainActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
     }

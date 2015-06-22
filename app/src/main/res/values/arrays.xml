@@ -5,4 +5,8 @@
         <item>Second</item>
         <item>Third</item>
     </array>
+    <string-array name="listaSexo">
+        <item>@string/ListaValor1</item>
+        <item>@string/ListaValor2</item>
+    </string-array>
 </resources>
