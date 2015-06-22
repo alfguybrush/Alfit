@@ -26,7 +26,6 @@
             android:maxHeight="100dp"
             android:src="@drawable/perfil"
             android:scaleType="centerCrop"
-            android:layout_marginTop="39dp"
             android:elevation="1dp"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true" />
@@ -54,78 +53,95 @@
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="fill_parent"
+                android:layout_height="match_parent"
                 android:layout_gravity="left|top"
                 android:background="@drawable/layout_bg"
                 >
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="fill_parent"
+                    android:layout_height="30dp"
+                    android:background="@drawable/tvbackground"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="Medium Text"
                     android:id="@+id/tv_usuario_perfil"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"
+                    android:layout_gravity="left|center_horizontal"
                     android:elegantTextHeight="true"
                     android:singleLine="false"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="7dp"
+                    android:layout_marginRight="7dp"
+                    android:layout_marginBottom="7dp"
+                    android:gravity="center" />
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="fill_parent"
+                    android:layout_height="30dp"
+                    android:background="@drawable/tvbackground"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="Medium Text"
                     android:id="@+id/tv__nombre_perfil"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"/>
+                    android:layout_gravity="left|center_horizontal"
+                    android:textStyle="bold"
+                    android:layout_margin="7dp"
+                    android:gravity="center" />
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="fill_parent"
+                    android:layout_height="30dp"
+                    android:background="@drawable/tvbackground"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="Medium Text"
                     android:id="@+id/tv_sexo_perfil"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"/>
+                    android:layout_gravity="left|center_horizontal"
+                    android:textStyle="bold"
+                    android:layout_margin="7dp"
+                    android:gravity="center" />
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="fill_parent"
+                    android:layout_height="30dp"
+                    android:background="@drawable/tvbackground"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="Medium Text"
                     android:id="@+id/tv_edad_perfil"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"/>
+                    android:layout_gravity="left|center_horizontal"
+                    android:textStyle="bold"
+                    android:layout_margin="7dp"
+                    android:gravity="center" />
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="fill_parent"
+                    android:layout_height="30dp"
+                    android:background="@drawable/tvbackground"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="Medium Text"
                     android:id="@+id/tv_peso_perfil"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"/>
+                    android:layout_gravity="left|center_horizontal"
+                    android:textStyle="bold"
+                    android:layout_margin="7dp"
+                    android:gravity="center" />
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="fill_parent"
+                    android:layout_height="30dp"
+                    android:background="@drawable/tvbackground"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="Medium Text"
                     android:id="@+id/tv_altura_perfil"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"/>
+                    android:layout_gravity="left|center_horizontal"
+                    android:textStyle="bold"
+                    android:layout_margin="7dp"
+                    android:gravity="center_horizontal" />
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="fill_parent"
+                    android:layout_height="30dp"
+                    android:background="@drawable/tvbackground"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="Medium Text"
                     android:id="@+id/tv_vo2_perfil"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"/>
+                    android:layout_gravity="left|center_horizontal"
+                    android:textStyle="bold"
+                    android:layout_margin="7dp"
+                    android:textAlignment="gravity"
+                    android:gravity="center" />
 
             </LinearLayout>
         </FrameLayout>

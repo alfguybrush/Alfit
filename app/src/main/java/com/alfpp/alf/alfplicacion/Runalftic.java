@@ -192,7 +192,9 @@ public class Runalftic extends ActionBarActivity
         }
         else{
             super.onBackPressed();
+            mlocManager.removeUpdates(mlocListener);
             this.finish();
+
 
         }
 
@@ -242,10 +244,11 @@ public class Runalftic extends ActionBarActivity
                 break;
 
         }
-        if(intent!=null){
+        if(intent !=null){
             startActivity(intent);
             mlocManager.removeUpdates(mlocListener);
             finish();
+
         }
 
 
@@ -322,10 +325,10 @@ public class Runalftic extends ActionBarActivity
         double longprincipio = fastLocation.getLongitude();
         LatLng latLng = new LatLng(latprincipio,longprincipio);
         map.setMapType(GoogleMap.MAP_TYPE_HYBRID);
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 18));
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16));
 
 // Zoom in, animating the camera.
-        map.animateCamera(CameraUpdateFactory.zoomTo(18), 2000, null);
+        map.animateCamera(CameraUpdateFactory.zoomTo(16), 2000, null);
     }
 
 
@@ -337,7 +340,7 @@ public class Runalftic extends ActionBarActivity
     private void IniciaMapa(){
         map = ((MapFragment) getFragmentManager().findFragmentById(R.id.mapa)).getMap();
          map.setMyLocationEnabled(true);
-        if (map!=null){
+        /*if (map!=null){
             Marker hamburg = map.addMarker(new MarkerOptions().position(HAMBURG)
                     .title("Hamburg"));
             Marker kiel = map.addMarker(new MarkerOptions()
@@ -346,7 +349,7 @@ public class Runalftic extends ActionBarActivity
                     .snippet("Kiel is cool")
                     .icon(BitmapDescriptorFactory
                             .fromResource(R.drawable.punto)));
-        }
+        }*/
 
     }
 
@@ -416,10 +419,10 @@ public class Runalftic extends ActionBarActivity
 
 
             //Inicializamos Variables
-            tvAltu.setText("Altura \n(m):" + "\n" + "0.0");
-            tvDist.setText("Distancia \n(Km):" + "\n" + "0.0");
-            tvVeloc.setText("Velocidad  \n(Km/h):" + "\n" + "0.0");
-            tvVelocGps.setText("Velocidad \n(Km/h):" + "\n" + "0.0");
+            tvAltu.setText("0.0m");
+            tvDist.setText("0.0m");
+            tvVeloc.setText("0.0km/h");
+            tvVelocGps.setText("0.0km/h");
             velMedia = 0;
             distancia = 0;
 
@@ -438,7 +441,7 @@ public class Runalftic extends ActionBarActivity
     //FUNCION FINALIZACION DE CARRERA
     private void Stop(){
         if(Initiated || Paused) {
-            TextSpeech = "Actividad Finalizada Jodido Garulo";
+            TextSpeech = "Actividad Finalizada";
             distancia = 0;
             t1.speak(TextSpeech, 0, null, "lectura de Velocidad");
             chronometer.stop();
@@ -454,7 +457,7 @@ public class Runalftic extends ActionBarActivity
 
     private void Paused(){
         Paused = true;
-        TextSpeech="Activity Paused";
+        TextSpeech="Actividad Pausada";
         t1.speak(TextSpeech, 0, null, "lectura de Velocidad");
         //Al parar se vuelve a tomar coordenadas de origen
         primero = true;
@@ -464,7 +467,7 @@ public class Runalftic extends ActionBarActivity
 
     private void Resume(){
         Paused = false;
-        TextSpeech="Activity Resumed";
+        TextSpeech="Actividad Reanudada";
         t1.speak(TextSpeech, 0, null, "lectura de Velocidad");
         chronometer.setBase(SystemClock.elapsedRealtime() + timeWhenStopped);
         chronometer.start();
@@ -509,9 +512,9 @@ public class Runalftic extends ActionBarActivity
                             longitudIni = lon;
                             latitudIni = lat;
                             Marker Posicion = map.addMarker(new MarkerOptions().position(latLng)
-                                    .title("Alf").snippet("Ha HA")
+                                    .title("Alf").snippet("")
                                     .icon(BitmapDescriptorFactory.fromResource(R.drawable.punto)));
-                            map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 18));
+                            map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16));
                             //String Text = "Mi ubicaci?n actual es: " + "\n Lat = "+ loc.getLatitude() + "\n Long = " + loc.getLongitude();
                             //Calculo de distancia recorrida
                             double elapsedMillis = SystemClock.elapsedRealtime() - chronometer.getBase();
@@ -523,9 +526,9 @@ public class Runalftic extends ActionBarActivity
                             distancia = distancia + dist;//falta +distancia
                             Sdistancia = df.format(distancia);
                             sdistanciaDif = df.format(dist);
-                            text1 = "Distancia  \n(Km):" + "\n" + Sdistancia;
+                            text1 = Sdistancia+"km";
                             tvDist.setText(text1);
-                            text1 = "Distancia rec \n(Km):" + "\n" + sdistanciaDif;
+                            text1 = "";
                             tvVo2.setText(text1);
 
 
@@ -538,16 +541,16 @@ public class Runalftic extends ActionBarActivity
                             velocidadGPS = velocidadGPS * 3.6; //Paso a Km/h
                             Svelocidad = df.format(velocMedia);
                             svelocidadGPS = df.format(velocidadGPS);
-                            text2 = "Velocidad Media\n(km/h)  " + "\n" + Svelocidad;
+                            text2 = Svelocidad+"Km/h";
                             tvVeloc.setText(text2);
-                            text2 = "Velocidad GPs\n" + svelocidadGPS;
+                            text2 = svelocidadGPS+"Km/h";
                             tvVelocGps.setText(text2);
 
 
                             //Altura
                             if (loc.hasAltitude()) {
 
-                                text2 = "Altura \n(m):" + "\n" + loc.getAltitude();
+                                text2 = loc.getAltitude()+"m";
                                 tvAltu.setText(text2);
                             }
                             lock = false;

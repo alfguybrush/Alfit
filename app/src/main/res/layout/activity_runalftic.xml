@@ -192,7 +192,6 @@
                         android:layout_gravity="center_horizontal|bottom"
                         style="@style/button_text"
                         android:elevation="12dp"
-                        android:layout_alignStart="@+id/bt_resume"
                         android:layout_centerInParent="true" />
 
                     <ImageButton
@@ -207,7 +206,6 @@
                         android:gravity="center"
                         style="@style/button_text"
                         android:elevation="12dp"
-                        android:layout_alignStart="@+id/bt_resume"
                         android:layout_centerInParent="true" />
 
                     <!-- The map fragments will go here -->
