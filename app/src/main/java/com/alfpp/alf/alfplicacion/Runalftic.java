@@ -20,6 +20,7 @@ import android.view.View;
 import android.widget.Chronometer;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -38,7 +39,7 @@ public class Runalftic extends ActionBarActivity
     private NavigationDrawerFragment mNavigationDrawerFragment;
     private CharSequence mTitle;
     String TextSpeech;
-    double latitudIni,longitudIni,distancia,velMedia, tiempo;
+    double latitudIni,longitudIni,distancia,velMedia, tiempo,vo2,intenMax;
     private Chronometer chronometer;
     boolean Initiated, Paused;
     DecimalFormat df;
@@ -48,7 +49,7 @@ public class Runalftic extends ActionBarActivity
     int contador;
     float pesoUser;
     float edadUser;
-    TextView tvVeloc, tvAltu, tvDist,tvVelocGps,tvVo2;
+    TextView tvVeloc, tvAltu, tvDist,tvVelocGps,tvInten,tvCalo;
     TextToSpeech t1;
     AlertDialog.Builder dialogo;
     public GoogleMap map;
@@ -57,17 +58,39 @@ public class Runalftic extends ActionBarActivity
     boolean primero;
     long timeWhenStopped;
     Locale locSpanish;
+    Location fastLocation;
+    double limite,peso;
+    BaseDatosAlfpp BD;
+    ImageButton Parada,Pause,Inicio,Resume;
+    int StatusActual=-1;
+    double[] vAltura;
+    double[] vVelocidad;
+    double[] vInten;
+    double[] vCalorias;
+    double[] TablaMets;
+    double[] TablaVeloc;
+
     //******************FIN INICIALIZACION VARIABLES******************************//
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        TablaMets = new double[] {3.3,3.8,5.0,9.0,10.0,11.0,11.5,12.5,13.5,14.0,15.0,16.0,18.0};
+        TablaVeloc= new double[] {4.5,5.3,6.4,8.4,9.6,10.8,11.3,12.1,12.9,13.8,14.5,16.1,17.5};
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_runalftic);
         Bundle bundle = getIntent().getExtras();
         TextView nombre = (TextView) findViewById(R.id.tv_nombre_header);
+        int id =bundle.getInt("idUsuario");
+        BD = new BaseDatosAlfpp(getApplicationContext());
+        peso = BD.getPeso(Integer.toString(id));
         nombre.setText(bundle.getString("Usuario","Defecto"));
         //mNavigationDrawerFragment.setArguments(); PROBAR LUEGO
+        vo2 = 48.00; //Medio
 
+        intenMax=IntenMax(vo2);
+        Toast toast1;
+        toast1 = Toast.makeText(getApplicationContext(),Double.toString(intenMax), Toast.LENGTH_SHORT);
+        toast1.show();
         latitudIni = 0;
         longitudIni=0;
         distancia = 0;
@@ -96,7 +119,8 @@ public class Runalftic extends ActionBarActivity
         tvDist = (TextView) findViewById(R.id.tv_dist);
         tvVeloc = (TextView) findViewById(R.id.tv_veloc);
         tvVelocGps = (TextView) findViewById(R.id.tv_velocGps);
-        tvVo2 = (TextView) findViewById(R.id.tv_vo2);
+        tvInten = (TextView) findViewById(R.id.tv_inten);
+        tvCalo = (TextView) findViewById(R.id.tv_calo);
         chronometer = (Chronometer) findViewById(R.id.chrono);
         chronometer.setTextSize(60);
         chronometer.setTextColor(-1);
@@ -120,10 +144,10 @@ public class Runalftic extends ActionBarActivity
         });
 
         //***********CONFIGURACION BOTONES******************//
-        final ImageButton Resume = (ImageButton) findViewById(R.id.bt_resume);
-        final ImageButton Parada = (ImageButton) findViewById(R.id.bt_stop);
-        final ImageButton Pause = (ImageButton) findViewById(R.id.bt_pause);
-        final ImageButton Inicio = (ImageButton) findViewById(R.id.bt_start);
+        Resume = (ImageButton) findViewById(R.id.bt_resume);
+        Parada = (ImageButton) findViewById(R.id.bt_stop);
+        Pause = (ImageButton) findViewById(R.id.bt_pause);
+        Inicio = (ImageButton) findViewById(R.id.bt_start);
         Inicio.setVisibility(View.VISIBLE);
         Pause.setVisibility(View.INVISIBLE);
         Resume.setVisibility(View.INVISIBLE);
@@ -132,9 +156,6 @@ public class Runalftic extends ActionBarActivity
         Inicio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Inicio.setVisibility(View.INVISIBLE);
-                Pause.setVisibility(View.VISIBLE);
-                Resume.setVisibility(View.INVISIBLE);
                 Start();
 
             }
@@ -145,9 +166,7 @@ public class Runalftic extends ActionBarActivity
         Pause.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Inicio.setVisibility(View.INVISIBLE);
-                Pause.setVisibility(View.INVISIBLE);
-                Resume.setVisibility(View.VISIBLE);
+
 
                 Paused();
 
@@ -158,9 +177,7 @@ public class Runalftic extends ActionBarActivity
         Resume.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Inicio.setVisibility(View.INVISIBLE);
-                Pause.setVisibility(View.VISIBLE);
-                Resume.setVisibility(View.INVISIBLE);
+
                 Resume();
 
 
@@ -173,9 +190,7 @@ public class Runalftic extends ActionBarActivity
             public void onClick(View view) {
 
                 //Hacer aqui lo de los botones para evitar crear mas variables
-                Inicio.setVisibility(View.VISIBLE);
-                Pause.setVisibility(View.INVISIBLE);
-                Resume.setVisibility(View.INVISIBLE);
+
                 Stop();
             }
 
@@ -320,7 +335,7 @@ public class Runalftic extends ActionBarActivity
         mlocManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, (LocationListener) mlocListener);
         mlocListener.setMainActivity(this);
         String provider = LocationManager.NETWORK_PROVIDER;
-        Location fastLocation = mlocManager.getLastKnownLocation(provider);
+        fastLocation = mlocManager.getLastKnownLocation(provider);
         double latprincipio = fastLocation.getLatitude();
         double longprincipio = fastLocation.getLongitude();
         LatLng latLng = new LatLng(latprincipio,longprincipio);
@@ -382,6 +397,41 @@ public class Runalftic extends ActionBarActivity
         }else
             t1.speak(text, 0, null,"lectura de Velocidad");
     }
+    //recorro las tablas para ver que met le corresponde
+    private  double getMet(double veloc){
+        boolean encontrado = false;
+        int i= 0;
+        double METs=0;
+        while(!encontrado){
+            if(veloc>TablaVeloc[i]){
+                i++;
+            }else{
+                encontrado=true;
+                METs = TablaMets[i];
+            }
+        }
+        return METs;
+    }
+    //Calculo intensidad máxima
+    private double IntenMax(double Vo2){
+        double IMax = Vo2/3.5;
+        return IMax;
+    }
+    private double getIntenPorc(double IntenMax,double MET){
+        double intensidad = MET/IntenMax;
+        intensidad = intensidad*100;
+        return intensidad;
+    }
+
+    private double getCal(double peso, double MET, double minutos){
+        double Cal = MET * 0.0175*peso*minutos;
+        return Cal;
+    }
+
+
+
+
+
     public static double getDistance(double lat_a,double lng_a, double lat_b, double lon_b){
         double Radius = 6372.8; //Radio de la tierra Km
         double dLat = Math.toRadians(lat_b-lat_a);
@@ -394,7 +444,7 @@ public class Runalftic extends ActionBarActivity
     }
 
     public static double getSpeedMinKm(double distance, double time){
-        double minutos = time/360;
+        double minutos = time/60;
         double veloc = minutos/distance;
         return veloc;
     }
@@ -411,8 +461,19 @@ public class Runalftic extends ActionBarActivity
 
     //FUNCION FINALIZACION DE CARRERA
     private void Start(){
+
         //PRIMERAVEZ QUE SE INICIALIZAN LAS latitud
-            primero =true;
+        if(StatusActual<2){
+            Toast toast1;
+            toast1 = Toast.makeText(getApplicationContext(),"GPS NO DISPONIBLE", Toast.LENGTH_SHORT);
+            toast1.show();
+
+        }else {
+            Inicio.setVisibility(View.INVISIBLE);
+            Pause.setVisibility(View.VISIBLE);
+            Resume.setVisibility(View.INVISIBLE);
+            limite = 0.1;
+            primero = true;
             TextSpeech = "Actividad Iniciada";
             t1.speak(TextSpeech, 0, null, "lectura de Velocidad");
             contador = 0;
@@ -434,6 +495,8 @@ public class Runalftic extends ActionBarActivity
             Paused = false;
             Initiated = true;
             timeWhenStopped = 0;
+        }
+
 
 
     }
@@ -441,6 +504,9 @@ public class Runalftic extends ActionBarActivity
     //FUNCION FINALIZACION DE CARRERA
     private void Stop(){
         if(Initiated || Paused) {
+            Inicio.setVisibility(View.VISIBLE);
+            Pause.setVisibility(View.INVISIBLE);
+            Resume.setVisibility(View.INVISIBLE);
             TextSpeech = "Actividad Finalizada";
             distancia = 0;
             t1.speak(TextSpeech, 0, null, "lectura de Velocidad");
@@ -456,6 +522,9 @@ public class Runalftic extends ActionBarActivity
 
 
     private void Paused(){
+        Inicio.setVisibility(View.INVISIBLE);
+        Pause.setVisibility(View.INVISIBLE);
+        Resume.setVisibility(View.VISIBLE);
         Paused = true;
         TextSpeech="Actividad Pausada";
         t1.speak(TextSpeech, 0, null, "lectura de Velocidad");
@@ -466,6 +535,9 @@ public class Runalftic extends ActionBarActivity
     }
 
     private void Resume(){
+        Inicio.setVisibility(View.INVISIBLE);
+        Pause.setVisibility(View.VISIBLE);
+        Resume.setVisibility(View.INVISIBLE);
         Paused = false;
         TextSpeech="Actividad Reanudada";
         t1.speak(TextSpeech, 0, null, "lectura de Velocidad");
@@ -523,13 +595,15 @@ public class Runalftic extends ActionBarActivity
                             //DISTANCIA RECORRIDA
 
 
-                            distancia = distancia + dist;//falta +distancia
+                            distancia = distancia + dist;
+
+
                             Sdistancia = df.format(distancia);
                             sdistanciaDif = df.format(dist);
                             text1 = Sdistancia+"km";
                             tvDist.setText(text1);
                             text1 = "";
-                            tvVo2.setText(text1);
+                            tvInten.setText(text1);
 
 
                             //Cambio latitud y longitud Inicial
@@ -552,9 +626,28 @@ public class Runalftic extends ActionBarActivity
 
                                 text2 = loc.getAltitude()+"m";
                                 tvAltu.setText(text2);
+
                             }
                             lock = false;
+                            if(distancia >limite){//Control cada x metros/kilometros
+                                String title =Double.toString(limite)+"Km";
+                                Posicion = map.addMarker(new MarkerOptions().position(latLng)
+                                        .title(title).snippet("")
+                                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_media_route_off_mono_dark)));
+
+                                double Met = getMet(velocMedia);
+                                double calo = getCal(peso, Met, tiempo / 60);
+                                String Scalo=df.format(calo);
+                                tvCalo.setText(Scalo+"Kcal");
+
+                                double intensidadActual= getIntenPorc(intenMax,Met);
+                                String Sintensidad=df.format(intensidadActual);
+                                tvInten.setText(Sintensidad+"%");
+                                limite = limite +0.1;
+
+                            }
                         }
+
 
                     }
 
@@ -585,6 +678,10 @@ public class Runalftic extends ActionBarActivity
             // TEMPORARILY_UNAVAILABLE -> Temp?ralmente no disponible pero se
             // espera que este disponible en breve
             // AVAILABLE -> Disponible
+            StatusActual = status;
+                Toast toast1;
+                toast1 = Toast.makeText(getApplicationContext(),Integer.toString(status), Toast.LENGTH_SHORT);
+                toast1.show();
         }
 
 

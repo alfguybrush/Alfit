@@ -2,7 +2,6 @@ package com.alfpp.alf.alfplicacion;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -56,20 +55,6 @@ public class Alfpp extends Activity implements OnClickListener {
 */
 
     }
-
-    public static int getDistance(double lat_a,double lng_a, double lat_b, double lon_b){
-        int Radius = 6371000; //Radio de la tierra
-        double lat1 = lat_a / 1E6;
-        double lat2 = lat_b / 1E6;
-        double lon1 = lng_a / 1E6;
-        double lon2 = lon_b / 1E6;
-        double dLat = Math.toRadians(lat2-lat1);
-        double dLon = Math.toRadians(lon2-lon1);
-        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) * Math.sin(dLon /2) * Math.sin(dLon/2);
-        double c = 2 * Math.asin(Math.sqrt(a));
-        return (int) (Radius * c);
-    }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

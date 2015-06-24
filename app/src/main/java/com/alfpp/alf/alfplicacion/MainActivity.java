@@ -32,7 +32,9 @@ public class MainActivity extends Activity implements View.OnClickListener {
                     finish();
                 }else{
                     Intent intent = new Intent(MainActivity.this, Runalftic.class);
+
                     intent.putExtra("Usuario",user);
+                    intent.putExtra("idUsuario",1);
                     startActivity(intent);
                     finish();
                 }
