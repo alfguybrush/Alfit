@@ -3,10 +3,14 @@ package com.alfpp.alf.alfplicacion;
 import android.app.Fragment;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 ;
 
@@ -47,7 +51,7 @@ public class Perfil extends Fragment {
         TextView tvaltura = (TextView) v.findViewById(R.id.tv_altura_perfil);
         TextView tvedad = (TextView) v.findViewById(R.id.tv_edad_perfil);
         TextView tvsexo = (TextView) v.findViewById(R.id.tv_sexo_perfil);
-        TextView tvVo2 = (TextView) v.findViewById(R.id.tv_vo2_perfil);
+        final TextView tvVo2 = (TextView) v.findViewById(R.id.tv_vo2_perfil);
         String user,name,surname,aux;
         double peso,altura,vo2;
         int edad,sexo;
@@ -78,9 +82,42 @@ public class Perfil extends Fragment {
         aux = Double.toString(altura);
         tvaltura.setText(aux);
         aux = Integer.toString(edad);
-        tvedad.setText("Edad: "+aux+"años");
+        String encodedText = Html.fromHtml("Edad: " + aux + "a&ntilde;os").toString();
+        tvedad.setText(encodedText);
         aux = Double.toString(vo2);
         tvVo2.setText("Vo2 Mac ="+aux);
+        tvVo2.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method tv
+                PopupMenu popup = new PopupMenu(getActivity(), tvVo2);
+                popup.getMenuInflater().inflate(R.menu.my_popupmenu , popup.getMenu());
+                //registra los eventos click para cada item del menu
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    public boolean onMenuItemClick(MenuItem item) {
+                        if (item.getItemId() == R.id.action_one)
+                        {
+                            Toast.makeText(getActivity(),
+                                    "Ejecutar : " + item.getTitle(), Toast.LENGTH_SHORT).show();
+                        }
+                        else if (item.getItemId() == R.id.action_two)
+                        {
+                            Toast.makeText(getActivity(),
+                                    "Ejecutar : " + item.getTitle() ,Toast.LENGTH_SHORT).show();
+                        }
+                        else if (item.getItemId() == R.id.action_three)
+                        {
+                            Toast.makeText(getActivity(),
+                                    "Ejecutar : " + item.getTitle() ,Toast.LENGTH_SHORT).show();
+                        }
+                        return true;
+                    }
+                });
+                popup.show();
+
+            }
+        });
 
 
     }

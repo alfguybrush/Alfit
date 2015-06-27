@@ -9,7 +9,8 @@
     <string name="title_section1">Carrera Normal</string>
     <string name="title_section2">Test Cooper</string>
     <string name="title_section3">Historial</string>
-    <string name="title_section4">Perfil</string>
+    <string name="title_section4">Que es Vo2</string>
+    <string name="title_section5">Resumen</string>
     <string name="title_activity_carreralf">Carreralf</string>
     <string name="title_activity_prueba">Prueba</string>
     <string name="title_activity_drawer">Drawer</string>
@@ -33,5 +34,11 @@
     <string name="title_activity_runalftic">Runalftic</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="title_activity_main_activity2">MainActivity2Activity</string>
+    <string name="title_activity_grafica">Grafica</string>
+    <string name="title_activity_prueba_grafica">PruebaGrafica</string>
+    <string name="title_activity_tabed">Tabed</string>
+    <string name="title_activity_pestanhas">Pestanhas</string>
+    <string name="title_activity_graf">graf</string>
+    <string name="title_activity_blank">Blank</string>
 
 </resources>

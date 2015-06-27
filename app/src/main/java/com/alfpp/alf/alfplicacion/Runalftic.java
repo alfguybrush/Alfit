@@ -255,7 +255,11 @@ public class Runalftic extends ActionBarActivity
                 mTitle = getString(R.string.title_section4);
                 intent = new Intent(Runalftic.this, Navegacion.class);
                 intent.putExtra("Pantalla", "Perfil");
-                intent.putExtra("selected_navigation_drawer_position", 4);
+                intent.putExtra("Opcion", 4);
+                break;
+            case 5:
+                intent = new Intent(Runalftic.this, Blank.class);
+
                 break;
 
         }
@@ -340,10 +344,10 @@ public class Runalftic extends ActionBarActivity
         double longprincipio = fastLocation.getLongitude();
         LatLng latLng = new LatLng(latprincipio,longprincipio);
         map.setMapType(GoogleMap.MAP_TYPE_HYBRID);
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16));
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
 
 // Zoom in, animating the camera.
-        map.animateCamera(CameraUpdateFactory.zoomTo(16), 2000, null);
+        map.animateCamera(CameraUpdateFactory.zoomTo(15), 2000, null);
     }
 
 
@@ -463,12 +467,7 @@ public class Runalftic extends ActionBarActivity
     private void Start(){
 
         //PRIMERAVEZ QUE SE INICIALIZAN LAS latitud
-        if(StatusActual<2){
-            Toast toast1;
-            toast1 = Toast.makeText(getApplicationContext(),"GPS NO DISPONIBLE", Toast.LENGTH_SHORT);
-            toast1.show();
 
-        }else {
             Inicio.setVisibility(View.INVISIBLE);
             Pause.setVisibility(View.VISIBLE);
             Resume.setVisibility(View.INVISIBLE);
@@ -484,6 +483,8 @@ public class Runalftic extends ActionBarActivity
             tvDist.setText("0.0m");
             tvVeloc.setText("0.0km/h");
             tvVelocGps.setText("0.0km/h");
+            tvInten.setText("0%");
+            tvCalo.setText("0 Kcal");
             velMedia = 0;
             distancia = 0;
 
@@ -495,7 +496,7 @@ public class Runalftic extends ActionBarActivity
             Paused = false;
             Initiated = true;
             timeWhenStopped = 0;
-        }
+
 
 
 
@@ -586,7 +587,7 @@ public class Runalftic extends ActionBarActivity
                             Marker Posicion = map.addMarker(new MarkerOptions().position(latLng)
                                     .title("Alf").snippet("")
                                     .icon(BitmapDescriptorFactory.fromResource(R.drawable.punto)));
-                            map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16));
+                            map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
                             //String Text = "Mi ubicaci?n actual es: " + "\n Lat = "+ loc.getLatitude() + "\n Long = " + loc.getLongitude();
                             //Calculo de distancia recorrida
                             double elapsedMillis = SystemClock.elapsedRealtime() - chronometer.getBase();
@@ -602,8 +603,6 @@ public class Runalftic extends ActionBarActivity
                             sdistanciaDif = df.format(dist);
                             text1 = Sdistancia+"km";
                             tvDist.setText(text1);
-                            text1 = "";
-                            tvInten.setText(text1);
 
 
                             //Cambio latitud y longitud Inicial
@@ -678,10 +677,8 @@ public class Runalftic extends ActionBarActivity
             // TEMPORARILY_UNAVAILABLE -> Temp?ralmente no disponible pero se
             // espera que este disponible en breve
             // AVAILABLE -> Disponible
-            StatusActual = status;
-                Toast toast1;
-                toast1 = Toast.makeText(getApplicationContext(),Integer.toString(status), Toast.LENGTH_SHORT);
-                toast1.show();
+            //ESTE METODO NO FUNCIONA con GPS
+
         }
 
 

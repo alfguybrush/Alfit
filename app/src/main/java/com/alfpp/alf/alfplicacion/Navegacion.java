@@ -36,7 +36,6 @@ public class Navegacion extends ActionBarActivity
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
         mTitle = getTitle();
-        mTitle ="Principal";
         // Set up the drawer.
         Bundle bundle = getIntent().getExtras();
         mNavigationDrawerFragment.selectItem(bundle.getInt("Opcion"));
@@ -76,6 +75,8 @@ public class Navegacion extends ActionBarActivity
 
         MostrarFragment(position );
 
+
+
     }
 
     public void onSectionAttached(int number) {
@@ -97,9 +98,6 @@ public class Navegacion extends ActionBarActivity
 
                 toast1.show();
                 mTitle = getString(R.string.title_section2);
-                mNavigationDrawerFragment.setUp(
-                        R.id.navigation_drawer,
-                        (DrawerLayout) findViewById(R.id.drawer_layout));
 
                 break;
 
@@ -109,48 +107,53 @@ public class Navegacion extends ActionBarActivity
 
                 toast1.show();
                 mTitle = getString(R.string.title_section3);
-                mNavigationDrawerFragment.setUp(
-                        R.id.navigation_drawer,
-                        (DrawerLayout) findViewById(R.id.drawer_layout));
+
                 break;
         }
     }
 
     private void MostrarFragment(int position){
         android.app.Fragment fragment = null;
-        Toast toast1;
+        ActionBar actionBar = getSupportActionBar();
+        Intent intent;
         switch (position){
             case 0://CabeceraPerfil
                 fragment = new Perfil();
-                toast1 = Toast.makeText(getApplicationContext(),"Perfil", Toast.LENGTH_SHORT);
-                //toast1.show();
+                mTitle = "Perfil";
                 break;
             case 1://CarreraNormal
-                Intent intent = new Intent(Navegacion.this, Runalftic.class);
-                intent.putExtra("Usuario","defecto");
+                intent = new Intent(Navegacion.this, Runalftic.class);
+                intent.putExtra("Usuario", "defecto");
                 startActivity(intent);
-
                 finish();
                 break;
 
-            case 2://TestCooper
+            case 2:// Cooper
                 fragment = new Cooper();
-                toast1 = Toast.makeText(getApplicationContext(),"Sesion", Toast.LENGTH_SHORT);
-                //toast1.show();
+                mTitle="Test de Cooper";
                 break;
 
             case 3:
+                fragment = new ItemFragment();
+                mTitle = "Historial";
                 break;
 
-            case 4://Historial
-                fragment = new ItemFragment();
+            case 4://Vo2
+                fragment = new QueEsVo2();
+                mTitle = "Que es Vo2";
+
 
             break;
-            case 5://PERFIL->Acerca De
+            case 5://Resumen
+                intent = new Intent(Navegacion.this, Blank.class);
+                startActivity(intent);
+                finish();
+
 
                 break;
         }
         if (fragment != null){
+            actionBar.setTitle(mTitle);
             Bundle bundle = new Bundle();
             bundle.putString("id","1");
             fragment.setArguments(bundle);

@@ -32,11 +32,10 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/CustomActionBarTheme"
-        >
+        android:theme="@style/CustomActionBarTheme" >
         <activity
             android:name=".MainActivity"
-            android:label="@string/title_activity_main" >
+            android:label="QAlf" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -77,14 +76,16 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name=".Alfpp"
-            android:configChanges="orientation|screenSize|keyboardHidden"
-            android:label="@string/app_name" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            android:name=".PruebaGrafica"
+            android:label="@string/title_activity_prueba_grafica" >
+        </activity>
+        <activity
+            android:name=".graf"
+            android:label="@string/title_activity_graf" >
+        </activity>
+        <activity
+            android:name=".Blank"
+            android:label="@string/title_activity_blank" >
         </activity>
     </application>
 

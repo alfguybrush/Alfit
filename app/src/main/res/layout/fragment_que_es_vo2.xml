@@ -1,9 +1,32 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" tools:context="com.alfpp.alf.alfplicacion.QueEsVo2">
+    android:layout_height="match_parent" tools:context="com.alfpp.alf.alfplicacion.QueEsVo2"
+    android:padding="10dp">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView android:layout_width="match_parent" android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="¿Qué es el Vo2 Máximo?"
+        android:id="@+id/textView3"
+        android:layout_gravity="center_horizontal|top"
+        android:padding="10dp" />
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:id="@+id/editText"
+        android:layout_gravity="center_horizontal|bottom"
+        android:padding="10dp"
+        android:textSize="20dp"
+        android:text="El VO2 máx es la cantidad máxima de oxígeno (O2) que el organismo puede absorber, transportar y consumir en un tiempo determinado, es decir, el máximo volumen de oxígeno en la sangre que nuestro organismo puede transportar y metabolizar. También se denomina Consumo máximo de oxígeno o capacidad aeróbica. Es la manera más eficaz de medir la capacidad aeróbica de un individuo. Cuanto mayor sea el VO2 máx, mayor será la capacidad cardiovascular." />
+
+    <WebView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/webView"
+        android:layout_gravity="center" />
 </FrameLayout>
