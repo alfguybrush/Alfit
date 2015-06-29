@@ -58,7 +58,8 @@
         <activity
             android:name=".Navegacion"
             android:configChanges="orientation|screenSize|keyboardHidden"
-            android:label="@string/title_activity_drawer" >
+            android:label="@string/title_activity_drawer"
+            android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".Test"
@@ -84,7 +85,7 @@
             android:label="@string/title_activity_graf" >
         </activity>
         <activity
-            android:name=".Blank"
+            android:name=".Resumen"
             android:label="@string/title_activity_blank" >
         </activity>
     </application>

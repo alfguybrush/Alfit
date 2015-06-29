@@ -16,7 +16,7 @@ import android.widget.Toast;
 
 
 public class Perfil extends Fragment {
-    String id;
+    int id;
     BaseDatosAlfpp BD;
 
     public Perfil() {
@@ -27,14 +27,13 @@ public class Perfil extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        id ="";
+        id =-1;
         View V = inflater.inflate(R.layout.fragment_perfil, container, false);
         Bundle bundle = this.getArguments();
-        id = bundle.getString("id","");
+        id = bundle.getInt("id",-1);
 
-        if(id!=""){
+        if(id!= -1){
             BD = new BaseDatosAlfpp(getActivity().getApplicationContext());
-
             setTextViews(V);
 
         }else{
@@ -48,43 +47,37 @@ public class Perfil extends Fragment {
         TextView tvusuario =(TextView) v.findViewById(R.id.tv_usuario_perfil);
         TextView tvnombre = (TextView) v.findViewById(R.id.tv__nombre_perfil);
         TextView tvpeso = (TextView) v.findViewById(R.id.tv_peso_perfil);
-        TextView tvaltura = (TextView) v.findViewById(R.id.tv_altura_perfil);
         TextView tvedad = (TextView) v.findViewById(R.id.tv_edad_perfil);
         TextView tvsexo = (TextView) v.findViewById(R.id.tv_sexo_perfil);
         final TextView tvVo2 = (TextView) v.findViewById(R.id.tv_vo2_perfil);
-        String user,name,surname,aux;
+        String name,surname,aux;
         double peso,altura,vo2;
         int edad,sexo;
+        Usuario user;
         user= BD.getUsuario(id);
 
-        name=BD.getNombre(id);
-        surname = BD.getApellido(id);
-        peso = BD.getPeso(id);
-        altura=BD.getAltura(id);
-        edad = BD.getEdad(id);
-        sexo =BD.getSexo(id);
-        vo2 = BD.getVo2(id);
+        name=user.getNombre();
+
         String Ssexo="";
-        if (sexo ==0){
+        if (user.sexo ==0){
             Ssexo="Hombre";
         }else{
-            if(sexo==1){
+            if(user.sexo==1){
                 Ssexo="Mujer";
             }
         }
         tvsexo.setText(Ssexo);
 
-        tvusuario.setText(user);
+        tvusuario.setText(user.getUser());
 
-        tvnombre.setText(name+" "+surname);
-        aux = Double.toString(peso);
+        tvnombre.setText(name+" "+user.getApellido());
+        aux = Double.toString(user.getPeso());
         tvpeso.setText("Peso: "+aux+"Kg");
-        aux = Double.toString(altura);
-        tvaltura.setText(aux);
-        aux = Integer.toString(edad);
+
+        aux = Integer.toString(user.edad);
         String encodedText = Html.fromHtml("Edad: " + aux + "a&ntilde;os").toString();
         tvedad.setText(encodedText);
-        aux = Double.toString(vo2);
+        aux = Double.toString(user.getVo2());
         tvVo2.setText("Vo2 Mac ="+aux);
         tvVo2.setOnClickListener(new View.OnClickListener() {
 

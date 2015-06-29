@@ -52,11 +52,7 @@ public class SignIn extends ActionBarActivity {
                 text = (EditText)findViewById(R.id.editPeso);
                 peso = Double.parseDouble(text.getText().toString());
 
-                text = (EditText)findViewById(R.id.editPass);
-                password = text.getText().toString();
 
-                text = (EditText)findViewById(R.id.editAltura);
-                altura = Double.parseDouble(text.getText().toString());
                 //Con el año de nacimiento y la fecha actual sacamos la edad (aprox)
                 final Calendar c = Calendar.getInstance();
                 anio = c.get(Calendar.YEAR);
@@ -65,7 +61,7 @@ public class SignIn extends ActionBarActivity {
 
                 BaseDatosAlfpp BD = new BaseDatosAlfpp(getApplicationContext());
 
-                BD.insertaUsuario(Nombre, Apellidos, edad, peso , altura,usuario,password,Sexo);
+                BD.insertaUsuario(Nombre, Apellidos, edad, peso ,usuario,Sexo);
 
 
                 Intent intent = new Intent(SignIn.this, MainActivity.class);

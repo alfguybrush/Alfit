@@ -14,7 +14,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
     TextView titulo;
     BaseDatosAlfpp BD;
-    String user;
+    Usuario user;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,8 +25,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
             @Override
             public void onClick(View view) {
 
-                user = BD.getUsuario("1");
-                if (user =="") {
+                user = BD.getUsuario(1);
+                if (user == null) {
                     Intent intent = new Intent(MainActivity.this, SignIn.class);
                     startActivity(intent);
                     finish();

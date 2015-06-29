@@ -6,6 +6,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.util.Date;
+
 /**
  * Created by Alf on 02/06/2015.
  */
@@ -15,23 +17,49 @@ public class BaseDatosAlfpp extends SQLiteOpenHelper{
     //Nombre del Archivo de Base de Datos
     private static final String NOMBRE_BASEDATOS = "qalfV1.0.db";
 
-    //Sentencia SQL creacion Tabla Usuario
+    //Sentencia SQL creacion Tabla com.alfpp.alf.alfplicacion.Usuario
 
     public BaseDatosAlfpp(Context context){
         super(context, NOMBRE_BASEDATOS, null, VERSION_BASEDATOS);
 
     }
     @Override
-    public void onCreate(SQLiteDatabase db){
+    public void onCreate(SQLiteDatabase db){//IMAGENES
 
-        db.execSQL("CREATE TABLE usuario(_id INTEGER PRIMARY KEY AUTOINCREMENT, sexo INTEGER, nombre TEXT, apellidos TEXT, edad INTEGER, peso DOUBLE,altura DOUBLE, usuario TEXT,password TEXT, Vo2 DOUBLE) ");
+        db.execSQL("CREATE TABLE usuario(_id INTEGER PRIMARY KEY AUTOINCREMENT, sexo INTEGER, nombre TEXT, apellidos TEXT, edad INTEGER, peso DOUBLE, usuario TEXT, Vo2 DOUBLE, numActividades INTEGER) ");
+        db.execSQL("CREATE TABLE carrera(_id INTEGER PRIMARY KEY AUTOINCREMENT ,idUsuario INTEGER, velocMedia DOUBLE, intensidadMedia DOUBLE, fecha DATE, duracion DOUBLE, distancia DOUBLE) ");
+
     }
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion){
         db.execSQL("drop table if exists usuario");
-        db.execSQL("CREATE TABLE users(_id INTEGER PRIMARY KEY AUTOINCREMENT,sexo INTEGER, nombre TEXT, apellidos TEXT, edad INTEGER, peso DOUBLE, altura DOUBLE, usuario TEXT,password TEXT) ");
+        db.execSQL("CREATE TABLE usuario(_id INTEGER PRIMARY KEY AUTOINCREMENT, sexo INTEGER, nombre TEXT, apellidos TEXT, edad INTEGER, peso DOUBLE, usuario TEXT, Vo2 DOUBLE) ");
+        db.execSQL("CREATE TABLE carrera(_id INTEGER PRIMARY KEY AUTOINCREMENT ,idUsuario INTEGER, velocMedia DOUBLE, intensidadMedia DOUBLE, fecha DATE, duracion DOUBLE, distancia DOUBLE) ");   }
+
+
+    public boolean insertaActividad(Date fecha, double tiempo, double distancia, double intensidadMedia,double velocMedia){
+        int idUsuario=0;
+        boolean valido;
+        SQLiteDatabase db = getWritableDatabase();
+        if(db!=null){
+            ContentValues values = new ContentValues();
+            values.put("velocMedia",velocMedia);
+            values.put("intensidadMedia",intensidadMedia);
+            values.put("fecha",fecha.toString());
+            values.put("duracion",tiempo);
+            values.put("distancia",distancia);
+            values.put("numActividades",0);
+            idUsuario = (int) db.insert("carrera",null,values);
+            valido = true;
+        }else{
+            valido = false;
+        }
+        db.close();
+        return valido;
     }
-    public boolean insertaUsuario(String nombre, String apellidos, int edad, double peso,double altura, String user, String pass,int Sexo){
+
+
+    public boolean insertaUsuario(String nombre, String apellidos, int edad, double peso, String user,int Sexo){
         int idUsuario=0;
         SQLiteDatabase db = getWritableDatabase();
         boolean valido;
@@ -42,9 +70,7 @@ public class BaseDatosAlfpp extends SQLiteOpenHelper{
             values.put("apellidos",apellidos);
             values.put("edad",edad);
             values.put("peso",peso);
-            values.put("altura",altura);
             values.put("usuario",user);
-            values.put("password",pass);
             values.put("Vo2",0.0);
             idUsuario = (int) db.insert("usuario",null,values);
             valido = true;
@@ -63,9 +89,7 @@ public class BaseDatosAlfpp extends SQLiteOpenHelper{
         values.put("apellidos",apellidos);
         values.put("edad",edad);
         values.put("peso",peso);
-        values.put("altura",altura);
         values.put("usuario",user);
-        values.put("password",pass);
         db.update("usuario", values, "_id=" + id, null);
 
         db.close();
@@ -75,20 +99,32 @@ public class BaseDatosAlfpp extends SQLiteOpenHelper{
         db.delete("usuarios", "_id=" + id, null);
     }
 
-    //////********Operaciones con Usuario***************///
-    public String getUsuario(String id){
+    //////********Operaciones con com.alfpp.alf.alfplicacion.Usuario***************///
+    public Usuario getUsuario(int id){
         SQLiteDatabase db = getWritableDatabase();
-        String user = "";
-        String[] args = new String[] {id};
-        Cursor c = db.rawQuery(" SELECT usuario FROM usuario WHERE _id=? ", args);
+        String user = "", nombre ="", apellidos="";
+        Usuario usuario;
+        int edad =0, sexo = -1;
+        double peso =0.0, vo2=0.0;
+        String SId= Integer.toString(id);
+        String[] args = new String[] {SId};
+        Cursor c = db.rawQuery(" SELECT usuario,nombre,apellidos,peso,sexo,edad,vo2 FROM usuario WHERE _id=? ", args);
         if (c.moveToFirst()) {
             //Recorremos el cursor hasta que no haya más registros
             do {
-               user = c.getString(0);
+                user = c.getString(0);
+                nombre = c.getString(1);
+                apellidos = c.getString(2);
+                peso = c.getDouble(3);
+                sexo = c.getInt(4);
+                edad = c.getInt(5);
+                vo2 = c.getDouble(6);
             } while(c.moveToNext());
-
+            usuario = new Usuario(id,user,nombre,apellidos,sexo,edad,peso);
+        }else{
+            usuario = null;
         }
-        return user;
+        return usuario;
     }
     //////********Operaciones con Nombre***************///
     public String getNombre(String id){

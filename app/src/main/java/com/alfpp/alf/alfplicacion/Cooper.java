@@ -1,13 +1,16 @@
 package com.alfpp.alf.alfplicacion;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +31,8 @@ public class Cooper extends Fragment {
     LocationManager mlocManager;
     MyLocationListener mlocListener;
     ImageButton start, stop;
+    AlertDialog.Builder dialogo;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
@@ -43,7 +48,8 @@ public class Cooper extends Fragment {
         start.setVisibility(View.VISIBLE);
         stop.setVisibility(View.INVISIBLE);
         df = new DecimalFormat("0.00");
-
+        IniciaLocation();
+        IniciaDialogo();
         start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -58,17 +64,37 @@ public class Cooper extends Fragment {
         stop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                Stop();
+                dialogo.show();
 
 
             }
 
         });
-        IniciaLocation();
+
         return V;
 
     }
+
+    private void IniciaDialogo(){
+        dialogo = new AlertDialog.Builder(getActivity());
+        String encodedText = Html.fromHtml("Atenci&oacute;n").toString();
+        dialogo.setTitle(encodedText);
+        encodedText = Html.fromHtml("El Test de Cooper no puede pausarse, Â¿Desea finalizar la actividad?").toString();
+        dialogo.setMessage(encodedText);
+        dialogo.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogo1, int id) {
+                Stop();
+            }
+        });
+        dialogo.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogo1, int id) {
+                // NADA
+            }
+        });
+    }
+
     private void Start(){
         Initiated = true;
         primero = true;
@@ -99,8 +125,8 @@ public class Cooper extends Fragment {
 
     public static double getVO2max(double dist,double kgs){
         //EL VO2 max va en funciòn de la distancia (km) recorrida en los 12 minutos.
-        double VO2 = 22.351*dist-11.288;
-        VO2 = VO2*kgs;
+        double VO2 = (dist*1000 - 504.9)/44.73;
+        // COn esto saco el volumen en litrosVO2 = VO2*kgs;
         return VO2;
 
     }

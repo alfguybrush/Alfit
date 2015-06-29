@@ -1,10 +1,13 @@
 package com.alfpp.alf.alfplicacion;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.text.Html;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -18,6 +21,8 @@ public class Navegacion extends ActionBarActivity
      */
     private NavigationDrawerFragment mNavigationDrawerFragment;
     private CharSequence mTitle;
+    private int seccion;
+    AlertDialog.Builder dialogo;
 
     /**
      * Used to store the last screen title. For use in {@link #restoreActionBar()}.
@@ -37,8 +42,10 @@ public class Navegacion extends ActionBarActivity
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
         mTitle = getTitle();
         // Set up the drawer.
+
         Bundle bundle = getIntent().getExtras();
-        mNavigationDrawerFragment.selectItem(bundle.getInt("Opcion"));
+        seccion = bundle.getInt("Opcion");
+        mNavigationDrawerFragment.selectItem(seccion);
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
@@ -51,13 +58,40 @@ public class Navegacion extends ActionBarActivity
         toast1 = Toast.makeText(getApplicationContext(),bundle.getString("Pantalla"), Toast.LENGTH_SHORT);
         toast1.show();
     }
+    private void IniciaDialogo(){
+        dialogo = new AlertDialog.Builder(this);
+        String encodedText = Html.fromHtml("Atenci&oacute;n").toString();
+        dialogo.setTitle(encodedText);
+        encodedText = Html.fromHtml("El Test de Cooper no puede pausarse, Si hay una actividad en curso terminar&aacute; \n¿Desea finalizar la actividad?").toString();
+        dialogo.setMessage(encodedText);
+        dialogo.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogo1, int id) {
+                Intent intent = new Intent(Navegacion.this, Runalftic.class);
+                intent.putExtra("com.alfpp.alf.alfplicacion.Usuario", "defecto");
+                startActivity(intent);
+                finish();
+            }
+        });
+        dialogo.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogo1, int id) {
+                // NADA
+            }
+        });
+    }
     @Override
     public void onBackPressed()
     {
-        Intent intent = new Intent(Navegacion.this, Runalftic.class);
-        intent.putExtra("Usuario","defecto");
-        startActivity(intent);
-        finish();
+        if (seccion == 2) {
+            IniciaDialogo();
+            dialogo.show();
+        }else{
+            Intent intent = new Intent(Navegacion.this, Runalftic.class);
+            intent.putExtra("com.alfpp.alf.alfplicacion.Usuario", "defecto");
+            startActivity(intent);
+            finish();
+        }
 
     }
 
@@ -123,7 +157,7 @@ public class Navegacion extends ActionBarActivity
                 break;
             case 1://CarreraNormal
                 intent = new Intent(Navegacion.this, Runalftic.class);
-                intent.putExtra("Usuario", "defecto");
+                intent.putExtra("com.alfpp.alf.alfplicacion.Usuario", "defecto");
                 startActivity(intent);
                 finish();
                 break;
@@ -145,7 +179,7 @@ public class Navegacion extends ActionBarActivity
 
             break;
             case 5://Resumen
-                intent = new Intent(Navegacion.this, Blank.class);
+                intent = new Intent(Navegacion.this, Resumen.class);
                 startActivity(intent);
                 finish();
 
@@ -153,9 +187,10 @@ public class Navegacion extends ActionBarActivity
                 break;
         }
         if (fragment != null){
+
             actionBar.setTitle(mTitle);
             Bundle bundle = new Bundle();
-            bundle.putString("id","1");
+            bundle.putInt("id",1);
             fragment.setArguments(bundle);
             android.app.FragmentManager fragmentManager = getFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.containerdrawer,fragment).commit();
