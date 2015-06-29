@@ -32,10 +32,13 @@ public class Cooper extends Fragment {
     MyLocationListener mlocListener;
     ImageButton start, stop;
     AlertDialog.Builder dialogo;
-
+    int id;
+    BaseDatosAlfpp BD;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
+        Bundle bundle = this.getArguments();
+        id = bundle.getInt("id",-1);
         tiempoMax = 720; //720 sec = 12 min
         peso = 72; //Obtener de BD
         View V = inflater.inflate(R.layout.fragment_cooper, container, false);
@@ -116,6 +119,10 @@ public class Cooper extends Fragment {
         chronometer.stop();
         if (terminado){
             double vo2 =getVO2max(distancia,peso);
+            BD = new BaseDatosAlfpp(getActivity().getApplicationContext());
+            Usuario user;
+            user = BD.getUsuario(id);
+            user.setVo2(vo2);
         }
     }
     public Cooper() {

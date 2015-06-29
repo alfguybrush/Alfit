@@ -25,7 +25,7 @@ import java.util.ArrayList;
 
 
 public class Resumen extends ActionBarActivity {
-    LineChart chartAltura;
+    LineChart chartAltura,chartIntensidad;
     HorizontalBarChart chartVelocidad;
     HorizontalBarChart chartTiempo;
 
@@ -49,14 +49,16 @@ public class Resumen extends ActionBarActivity {
         //ArrayVelocidad ArrayIntensidad ArrayAltura
         ArrayList<Double> velocidad =(ArrayList<Double>) bundle.getSerializable("ArrayVelocidad");
         ArrayList<Double> altura =(ArrayList<Double>) bundle.getSerializable("ArrayAltura");
-        //ArrayList<Double> intensidad =(ArrayList<Double>) bundle.getSerializable("ArrayVelocidad");
+        ArrayList<Double> intensidad =(ArrayList<Double>) bundle.getSerializable("ArrayIntensidad");
         chartVelocidad = (HorizontalBarChart)findViewById(R.id.chart_velocidad);
         chartAltura = (LineChart) findViewById(R.id.chart_altura);
+        chartIntensidad = (LineChart) findViewById(R.id.chart_intensidad);
         setDataBarChartVeloc(velocidad);
-        setDataHorizontalBarAltura(altura);
-
+        setDataLineAltura(altura);
+        setDataLineIntensidad(intensidad);
 
         chartAltura.setVisibility(View.INVISIBLE);
+        chartIntensidad.setVisibility(View.INVISIBLE);
 
 /*
 
@@ -75,6 +77,7 @@ public class Resumen extends ActionBarActivity {
             public void onClick(View view) {
                 chartVelocidad.setVisibility(View.VISIBLE);
                 chartAltura.setVisibility(View.INVISIBLE);
+                chartIntensidad.setVisibility(View.INVISIBLE);
             }
 
         });
@@ -83,25 +86,27 @@ public class Resumen extends ActionBarActivity {
             public void onClick(View view) {
                 chartVelocidad.setVisibility(View.INVISIBLE);
                 chartAltura.setVisibility(View.VISIBLE);
+                chartIntensidad.setVisibility(View.INVISIBLE);
 
             }
 
         });
-        boton_tiempo.setOnClickListener(new View.OnClickListener() {
+        boton_intensidad.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 chartVelocidad.setVisibility(View.INVISIBLE);
-                chartAltura.setVisibility(View.VISIBLE);
+                chartAltura.setVisibility(View.INVISIBLE);
+                chartIntensidad.setVisibility(View.VISIBLE);
             }
 
-            });
+        });
 
 
 
         // Setting Custom Color for the Scroll bar indicator of the Tab View
     }
 
-    private void setDataHorizontalBarAltura(ArrayList<Double> arrayValores){
+    private void setDataLineAltura(ArrayList<Double> arrayValores){
 
         chartAltura.setDrawGridBackground(false);
         chartAltura.setDescription("Gráfica ejemplo Altura");
@@ -174,6 +179,81 @@ public class Resumen extends ActionBarActivity {
 
         // set data
         chartAltura.setData(dataLine);
+
+    }
+    private void setDataLineIntensidad(ArrayList<Double> arrayValores){
+
+        chartIntensidad.setDrawGridBackground(false);
+        chartIntensidad.setDescription("Gráfica ejemplo Altura");
+
+        chartIntensidad.setHighlightEnabled(true);
+        chartIntensidad.setTouchEnabled(true);
+        chartIntensidad.setDragEnabled(true);
+        chartIntensidad.setScaleEnabled(true);
+
+        chartIntensidad.setPinchZoom(true);
+
+        LimitLine ll1 = new LimitLine(40f, "Upper Limit");
+        ll1.setLineWidth(10f);
+        ll1.enableDashedLine(10f, 10f, 0f);
+        ll1.setLabelPosition(LimitLine.LimitLabelPosition.POS_RIGHT);
+        ll1.setTextSize(20f);
+
+        LimitLine ll2 = new LimitLine(-30f, "Lower Limit");
+        ll2.setLineWidth(4f);
+        ll2.enableDashedLine(10f, 10f, 0f);
+        ll2.setLabelPosition(LimitLine.LimitLabelPosition.POS_RIGHT);
+        ll2.setTextSize(10f);
+
+        YAxis leftAxis = chartAltura.getAxisLeft();
+        leftAxis.removeAllLimitLines(); // reset all limit lines to avoid overlapping lines
+        leftAxis.addLimitLine(ll1);
+        leftAxis.addLimitLine(ll2);
+        leftAxis.setAxisMaxValue(100F);
+        leftAxis.setAxisMinValue(0f);
+        leftAxis.setStartAtZero(false);
+        //leftAxis.setYOffset(20f);
+        leftAxis.enableGridDashedLine(10f, 10f, 0f);
+
+        // limit lines are drawn behind data (and not on top)
+        leftAxis.setDrawLimitLinesBehindData(true);
+
+        chartIntensidad.getAxisRight().setEnabled(false);
+        ArrayList<Entry> yVals = new ArrayList<Entry>();
+
+
+        ArrayList<String> xVals = new ArrayList<String>();
+        for (int i = 0; i < arrayValores.size(); i++) {
+            xVals.add((i) + "");
+            yVals.add(new Entry(arrayValores.get(i).floatValue(), i));
+        }
+        // create a dataset and give it a type
+        LineDataSet set1 = new LineDataSet(yVals, "DataSet 1");
+        // set1.setFillAlpha(110);
+        // set1.setFillColor(Color.RED);
+
+        // set the line to be drawn like this "- - - - - -"
+        set1.enableDashedLine(10f, 5f, 0f);
+        //set1.setColor(Color.BLACK);
+        //.setCircleColor(Color.BLACK);
+        set1.setLineWidth(5f);
+        set1.setCircleSize(10f);
+        set1.setValueTextSize(20f);
+        set1.setFillAlpha(65);
+        set1.setDrawCubic(true);
+        set1.setFillColor(Color.CYAN);
+        set1.setDrawFilled(true);
+        // set1.setShader(new LinearGradient(0, 0, 0, mChart.getHeight(),
+        // Color.BLACK, Color.WHITE, Shader.TileMode.MIRROR));
+
+        ArrayList<LineDataSet> dataSets = new ArrayList<LineDataSet>();
+        dataSets.add(set1); // add the datasets
+
+        // create a data object with the datasets
+        LineData dataLine = new LineData(xVals, dataSets);
+
+        // set data
+        chartIntensidad.setData(dataLine);
 
     }
 

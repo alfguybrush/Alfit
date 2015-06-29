@@ -37,8 +37,8 @@ public class BaseDatosAlfpp extends SQLiteOpenHelper{
         db.execSQL("CREATE TABLE carrera(_id INTEGER PRIMARY KEY AUTOINCREMENT ,idUsuario INTEGER, velocMedia DOUBLE, intensidadMedia DOUBLE, fecha DATE, duracion DOUBLE, distancia DOUBLE) ");   }
 
 
-    public boolean insertaActividad(Date fecha, double tiempo, double distancia, double intensidadMedia,double velocMedia){
-        int idUsuario=0;
+    public int insertaActividad(Date fecha, double tiempo, double distancia, double intensidadMedia,double velocMedia){
+        int idCarrera=0;
         boolean valido;
         SQLiteDatabase db = getWritableDatabase();
         if(db!=null){
@@ -49,14 +49,15 @@ public class BaseDatosAlfpp extends SQLiteOpenHelper{
             values.put("duracion",tiempo);
             values.put("distancia",distancia);
             values.put("numActividades",0);
-            idUsuario = (int) db.insert("carrera",null,values);
+            idCarrera = (int) db.insert("carrera",null,values);
             valido = true;
         }else{
             valido = false;
         }
         db.close();
-        return valido;
+        return idCarrera;
     }
+
 
 
     public boolean insertaUsuario(String nombre, String apellidos, int edad, double peso, String user,int Sexo){
@@ -127,10 +128,10 @@ public class BaseDatosAlfpp extends SQLiteOpenHelper{
         return usuario;
     }
     //////********Operaciones con Nombre***************///
-    public String getNombre(String id){
+    public String getNombre(int id){
         SQLiteDatabase db = getWritableDatabase();
         String name = "";
-        String[] args = new String[] {id};
+        String[] args = new String[] {Integer.toString(id)};
         Cursor c = db.rawQuery(" SELECT nombre FROM usuario WHERE _id=? ", args);
         if (c.moveToFirst()) {
             //Recorremos el cursor hasta que no haya más registros

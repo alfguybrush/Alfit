@@ -10,6 +10,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.text.Html;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -23,6 +24,8 @@ public class Navegacion extends ActionBarActivity
     private CharSequence mTitle;
     private int seccion;
     AlertDialog.Builder dialogo;
+    int id;
+    BaseDatosAlfpp BD;
 
     /**
      * Used to store the last screen title. For use in {@link #restoreActionBar()}.
@@ -35,7 +38,7 @@ public class Navegacion extends ActionBarActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drawer);
         Toast toast;
-        toast = Toast.makeText(getApplicationContext(),"1", Toast.LENGTH_SHORT);
+        toast = Toast.makeText(getApplicationContext(), "1", Toast.LENGTH_SHORT);
         //toast.show();
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)
@@ -43,7 +46,17 @@ public class Navegacion extends ActionBarActivity
         mTitle = getTitle();
         // Set up the drawer.
 
+
         Bundle bundle = getIntent().getExtras();
+        TextView nombre = (TextView) findViewById(R.id.tv_nombre_header);
+        id =bundle.getInt("idUsuario");
+        Toast toast1;
+        toast1 = Toast.makeText(getApplicationContext(),Integer.toString(id), Toast.LENGTH_SHORT);
+        toast1.show();
+
+        BD = new BaseDatosAlfpp(getApplicationContext());
+        String name = BD.getNombre(id);
+        nombre.setText(name);
         seccion = bundle.getInt("Opcion");
         mNavigationDrawerFragment.selectItem(seccion);
         mNavigationDrawerFragment.setUp(
@@ -51,9 +64,7 @@ public class Navegacion extends ActionBarActivity
                 (DrawerLayout) findViewById(R.id.drawer_layout));
 
 
-        Toast toast1;
-        toast1 = Toast.makeText(getApplicationContext(),"1", Toast.LENGTH_SHORT);
-        //toast1.show();
+
 
         toast1 = Toast.makeText(getApplicationContext(),bundle.getString("Pantalla"), Toast.LENGTH_SHORT);
         toast1.show();
@@ -68,7 +79,7 @@ public class Navegacion extends ActionBarActivity
             @Override
             public void onClick(DialogInterface dialogo1, int id) {
                 Intent intent = new Intent(Navegacion.this, Runalftic.class);
-                intent.putExtra("com.alfpp.alf.alfplicacion.Usuario", "defecto");
+                intent.putExtra("idUsuario",id);
                 startActivity(intent);
                 finish();
             }
@@ -157,7 +168,7 @@ public class Navegacion extends ActionBarActivity
                 break;
             case 1://CarreraNormal
                 intent = new Intent(Navegacion.this, Runalftic.class);
-                intent.putExtra("com.alfpp.alf.alfplicacion.Usuario", "defecto");
+                intent.putExtra("idUsuario", id);
                 startActivity(intent);
                 finish();
                 break;

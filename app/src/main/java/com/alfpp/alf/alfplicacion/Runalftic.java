@@ -74,6 +74,7 @@ public class Runalftic extends ActionBarActivity
     ArrayList<Double> arrayIntensidad;
     ArrayList<Double> arrayTiempo;
     double distanciaTotal,caloriasTotal;
+    int id;
 
     //******************FIN INICIALIZACION VARIABLES******************************//
 
@@ -85,10 +86,11 @@ public class Runalftic extends ActionBarActivity
         setContentView(R.layout.activity_runalftic);
         Bundle bundle = getIntent().getExtras();
         TextView nombre = (TextView) findViewById(R.id.tv_nombre_header);
-        int id =bundle.getInt("idUsuario");
+        id =bundle.getInt("idUsuario");
         BD = new BaseDatosAlfpp(getApplicationContext());
         peso = BD.getPeso(Integer.toString(id));
-        nombre.setText(bundle.getString("com.alfpp.alf.alfplicacion.Usuario","Defecto"));
+        String Nombre= BD.getNombre(id);
+        nombre.setText(Nombre);
         //mNavigationDrawerFragment.setArguments(); PROBAR LUEGO
         vo2 = 48.00; //Medio
 
@@ -267,12 +269,14 @@ public class Runalftic extends ActionBarActivity
                 intent.putExtra("Opcion", 4);
                 break;
             case 5:
+
                 intent = new Intent(Runalftic.this, Resumen.class);
 
                 break;
 
         }
         if(intent !=null){
+            intent.putExtra("idUsuario",id);
             startActivity(intent);
             mlocManager.removeUpdates(mlocListener);
             finish();
@@ -533,13 +537,17 @@ public class Runalftic extends ActionBarActivity
             velMedia = getMedia(arrayVelocidad);
             double intenMedia = getMedia(arrayIntensidad);
             tiempo = elapsedMillis / 1000;
-            BD.insertaActividad(hoy,tiempo,distanciaTotal,intenMedia,velMedia);
+            int idCarrera = BD.insertaActividad(hoy,tiempo,distanciaTotal,intenMedia,velMedia);
+            Toast toast1;
+            toast1 = Toast.makeText(getApplicationContext(),Double.toString(idCarrera), Toast.LENGTH_SHORT);
+            toast1.show();
             Intent intent = new Intent(Runalftic.this, Resumen.class);
             //METEMOS LO NECESARIO PARA HACER EL RESUMEN
             intent.putExtra("ArrayVelocidad",arrayVelocidad);
             intent.putExtra("ArrayIntensidad",arrayIntensidad);
             intent.putExtra("ArrayAltura",arrayAltura);
-            intent.putExtra("IdUsuario",1);
+            intent.putExtra("idUsuario",id);
+            intent.putExtra("idCarrera",idCarrera);
             startActivity(intent);
             mlocManager.removeUpdates(mlocListener);
             finish();
@@ -601,10 +609,6 @@ public class Runalftic extends ActionBarActivity
             // Este m?todo se ejecuta cada vez que el GPS recibe nuevas coordenadas
             // debido a la detecci?n de un cambio de ubicacion
             if(Initiated && !Paused) {
-                if (lock) {
-                    TextSpeech = "Activity Paused";
-                    t1.speak(TextSpeech, 0, null, "lectura de Velocidad");
-                } else {
                     if (loc.hasAccuracy()) {
                         if(primero){
                             latitudIni = loc.getLatitude();
@@ -628,7 +632,7 @@ public class Runalftic extends ActionBarActivity
                             //Calculo de distancia recorrida
                             double elapsedMillis = SystemClock.elapsedRealtime() - chronometer.getBase();
                             tiempo = elapsedMillis / 1000;
-
+                            double tiempoIntervalo = tiempo -tiempaux;
                             //DISTANCIA RECORRIDA
 
 
@@ -646,7 +650,7 @@ public class Runalftic extends ActionBarActivity
 
                             // VELOCIDAD
                             double velocidadGPS = loc.getSpeed();
-                            double velocMedia = getSpeedKmH(distancia, tiempo-tiempaux);
+                            double velocMedia = getSpeedKmH(distancia, tiempoIntervalo);
                             velocidadGPS = velocidadGPS * 3.6; //Paso a Km/h
                             Svelocidad = df.format(velocMedia);
                             svelocidadGPS = df.format(velocidadGPS);
@@ -668,7 +672,7 @@ public class Runalftic extends ActionBarActivity
                                 tiempaux = tiempo;
                                 //String title =Double.toString(limite)+"Km";
                                 double Met = getMet(velocMedia);
-                                double calo = getCal(peso, Met, tiempo / 60);
+                                double calo = getCal(peso, Met, tiempoIntervalo / 60);
                                 caloriasTotal = caloriasTotal + calo;
                                 String Scalo=df.format(caloriasTotal);
                                 tvCalo.setText(Scalo+"Kcal");
@@ -689,8 +693,6 @@ public class Runalftic extends ActionBarActivity
 
 
                     }
-
-                }
 
             }
         }
