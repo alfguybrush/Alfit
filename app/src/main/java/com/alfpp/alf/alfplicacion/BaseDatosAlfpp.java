@@ -27,28 +27,33 @@ public class BaseDatosAlfpp extends SQLiteOpenHelper{
     public void onCreate(SQLiteDatabase db){//IMAGENES
 
         db.execSQL("CREATE TABLE usuario(_id INTEGER PRIMARY KEY AUTOINCREMENT, sexo INTEGER, nombre TEXT, apellidos TEXT, edad INTEGER, peso DOUBLE, usuario TEXT, Vo2 DOUBLE, numActividades INTEGER) ");
-        db.execSQL("CREATE TABLE carrera(_id INTEGER PRIMARY KEY AUTOINCREMENT ,idUsuario INTEGER, velocMedia DOUBLE, intensidadMedia DOUBLE, fecha DATE, duracion DOUBLE, distancia DOUBLE) ");
+        db.execSQL("CREATE TABLE carrera(_id INTEGER PRIMARY KEY AUTOINCREMENT ,idUsuario INTEGER," +
+                " velocMedia DOUBLE, intensidadMedia DOUBLE," +
+                " fecha DATE, duracion DOUBLE, distancia DOUBLE) ");
 
     }
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion){
         db.execSQL("drop table if exists usuario");
-        db.execSQL("CREATE TABLE usuario(_id INTEGER PRIMARY KEY AUTOINCREMENT, sexo INTEGER, nombre TEXT, apellidos TEXT, edad INTEGER, peso DOUBLE, usuario TEXT, Vo2 DOUBLE) ");
-        db.execSQL("CREATE TABLE carrera(_id INTEGER PRIMARY KEY AUTOINCREMENT ,idUsuario INTEGER, velocMedia DOUBLE, intensidadMedia DOUBLE, fecha DATE, duracion DOUBLE, distancia DOUBLE) ");   }
+        db.execSQL("CREATE TABLE usuario(_id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                " sexo INTEGER, nombre TEXT, apellidos TEXT, edad INTEGER, peso DOUBLE, usuario TEXT, Vo2 DOUBLE) ");
+        db.execSQL("CREATE TABLE carrera(_id INTEGER PRIMARY KEY AUTOINCREMENT ," +
+                "idUsuario INTEGER, velocMedia DOUBLE, intensidadMedia DOUBLE, " +
+                "fecha TEXT, duracion DOUBLE, distancia DOUBLE) ");   }
 
 
-    public int insertaActividad(Date fecha, double tiempo, double distancia, double intensidadMedia,double velocMedia){
+    public int insertaActividad(Date fecha,int idUsuario, double tiempo, double distancia, double intensidadMedia,double velocMedia){
         int idCarrera=0;
         boolean valido;
         SQLiteDatabase db = getWritableDatabase();
         if(db!=null){
             ContentValues values = new ContentValues();
+            values.put("idUsuario",idUsuario);
             values.put("velocMedia",velocMedia);
             values.put("intensidadMedia",intensidadMedia);
             values.put("fecha",fecha.toString());
             values.put("duracion",tiempo);
             values.put("distancia",distancia);
-            values.put("numActividades",0);
             idCarrera = (int) db.insert("carrera",null,values);
             valido = true;
         }else{
@@ -60,7 +65,7 @@ public class BaseDatosAlfpp extends SQLiteOpenHelper{
 
 
 
-    public boolean insertaUsuario(String nombre, String apellidos, int edad, double peso, String user,int Sexo){
+    public int insertaUsuario(String nombre, String apellidos, int edad, double peso, String user,int Sexo){
         int idUsuario=0;
         SQLiteDatabase db = getWritableDatabase();
         boolean valido;
@@ -79,7 +84,7 @@ public class BaseDatosAlfpp extends SQLiteOpenHelper{
             valido = false;
         }
         db.close();
-        return valido;
+        return idUsuario;
     }
     //Sexo 0 = Homnbre , 1 = Mujer;
     public void modificaUsuario(int id,String nombre,String apellidos,String user, String pass,int Sexo, int edad, double peso, double altura){
@@ -126,6 +131,34 @@ public class BaseDatosAlfpp extends SQLiteOpenHelper{
             usuario = null;
         }
         return usuario;
+    }
+
+    //
+    public Actividad getActividad(int idCarrera){
+        SQLiteDatabase db = getWritableDatabase();
+        String fecha = "";
+        int idUsuario =-1;
+        Actividad actividad;
+        double velocMedia=0.0,intensidadMedia =0.0,duracion=0.0,distancia=0.0;
+        String SId= Integer.toString(idCarrera);
+        String[] args = new String[] {SId};
+        Cursor c = db.rawQuery(" SELECT idUsuario, velocMedia,intensidadMedia,fecha,duracion,distancia FROM carrera WHERE _id=? ", args);
+        if (c.moveToFirst()) {
+            //Recorremos el cursor hasta que no haya más registros
+            do {
+                idUsuario = c.getInt(0);
+                velocMedia = c.getDouble(1);
+                intensidadMedia= c.getDouble(2);
+                fecha = c.getString(3);
+                duracion = c.getDouble(4);
+                distancia = c.getDouble(5);
+            } while(c.moveToNext());
+
+            actividad = new Actividad(idCarrera, idUsuario,velocMedia,intensidadMedia,duracion,distancia,fecha);
+        }else{
+            actividad = null;
+        }
+        return actividad;
     }
     //////********Operaciones con Nombre***************///
     public String getNombre(int id){

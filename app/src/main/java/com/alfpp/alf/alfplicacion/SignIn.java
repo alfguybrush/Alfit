@@ -61,9 +61,11 @@ public class SignIn extends ActionBarActivity {
 
                 BaseDatosAlfpp BD = new BaseDatosAlfpp(getApplicationContext());
 
-                BD.insertaUsuario(Nombre, Apellidos, edad, peso ,usuario,Sexo);
+                int id =BD.insertaUsuario(Nombre, Apellidos, edad, peso ,usuario,Sexo);
 
-
+                Toast toast1;
+                toast1 = Toast.makeText(getApplicationContext(),Double.toString(id), Toast.LENGTH_SHORT);
+                toast1.show();
                 Intent intent = new Intent(SignIn.this, MainActivity.class);
                 startActivity(intent);
                 finish();

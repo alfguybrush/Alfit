@@ -55,7 +55,7 @@
                 android:layout_height="60dp"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="Fecha"
-                android:id="@+id/tv_fecha"
+                android:id="@+id/tv_fecha_resumen"
                 android:layout_gravity="left|top" />
         </FrameLayout>
     </RelativeLayout>

@@ -9,6 +9,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.HorizontalBarChart;
 import com.github.mikephil.charting.charts.LineChart;
@@ -28,6 +30,8 @@ public class Resumen extends ActionBarActivity {
     LineChart chartAltura,chartIntensidad;
     HorizontalBarChart chartVelocidad;
     HorizontalBarChart chartTiempo;
+    int idCarrera;
+    BaseDatosAlfpp BD;
 
     @Override
     public void onBackPressed()
@@ -46,6 +50,22 @@ public class Resumen extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_resumen);
         Bundle bundle = getIntent().getExtras();
+        BD = new BaseDatosAlfpp(getApplicationContext());
+        Actividad actividad;
+        idCarrera= bundle.getInt("idCarrera");
+        Toast toast1;
+        toast1 = Toast.makeText(getApplicationContext(),Double.toString(idCarrera), Toast.LENGTH_SHORT);
+        toast1.show();
+        actividad = BD.getActividad(idCarrera);
+
+        TextView tv_fecha = (TextView) findViewById(R.id.tv_fecha_resumen);
+        TextView tv_duracion = (TextView) findViewById(R.id.tv_duracion_resumen);
+        TextView tv_intensidad = (TextView) findViewById(R.id.tv_intenmedia_resumen);
+        TextView tv_velocidad = (TextView) findViewById(R.id.tv_velocmdia_resumen);
+
+        tv_fecha.setText(actividad.getFecha());
+        tv_duracion.setText(Double.toString(actividad.getDuracion()));
+
         //ArrayVelocidad ArrayIntensidad ArrayAltura
         ArrayList<Double> velocidad =(ArrayList<Double>) bundle.getSerializable("ArrayVelocidad");
         ArrayList<Double> altura =(ArrayList<Double>) bundle.getSerializable("ArrayAltura");

@@ -537,7 +537,7 @@ public class Runalftic extends ActionBarActivity
             velMedia = getMedia(arrayVelocidad);
             double intenMedia = getMedia(arrayIntensidad);
             tiempo = elapsedMillis / 1000;
-            int idCarrera = BD.insertaActividad(hoy,tiempo,distanciaTotal,intenMedia,velMedia);
+            int idCarrera = BD.insertaActividad(hoy,id,tiempo,distanciaTotal,intenMedia,velMedia);
             Toast toast1;
             toast1 = Toast.makeText(getApplicationContext(),Double.toString(idCarrera), Toast.LENGTH_SHORT);
             toast1.show();
