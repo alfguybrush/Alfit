@@ -9,18 +9,17 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="180dp"
+        android:layout_height="100dp"
         android:id="@+id/relativeLayout">
 
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_centerVertical="true"
+            android:layout_height="100dp"
             android:layout_alignParentStart="true">
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="60dp"
+                android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="VelocidadMedia"
                 android:id="@+id/tv_velocmdia_resumen"
@@ -38,25 +37,25 @@
                 android:layout_width="wrap_content"
                 android:layout_height="60dp"
                 android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Fecha"
+                android:id="@+id/tv_fecha_resumen"
+                android:layout_gravity="left|top" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="Intensidad Media"
                 android:id="@+id/tv_intenmedia_resumen"
-                android:layout_gravity="left|bottom" />
+                android:layout_gravity="center_horizontal|top" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="60dp"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="Distancia"
-                android:id="@+id/tv_distancia"
-                android:layout_gravity="right|bottom" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="60dp"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Fecha"
-                android:id="@+id/tv_fecha_resumen"
-                android:layout_gravity="left|top" />
+                android:id="@+id/tv_distancia_resumen"
+                android:layout_gravity="right|top" />
         </FrameLayout>
     </RelativeLayout>
 
@@ -66,7 +65,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/bt_grafica_intensidad"
         android:elevation="15dp"
-        android:layout_marginBottom="280dp"
+        android:layout_marginBottom="360dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:layout_marginRight="0dp" />
@@ -79,7 +78,7 @@
         android:elevation="15dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
-        android:layout_marginBottom="280dp" />
+        android:layout_marginBottom="360dp" />
 
     <ImageButton
         android:background="@drawable/boton_redondopeq"
@@ -90,7 +89,7 @@
         android:layout_alignParentTop="false"
         android:layout_alignParentStart="true"
         android:layout_gravity="center_horizontal|bottom"
-        android:layout_marginBottom="280dp"
+        android:layout_marginBottom="360dp"
         android:layout_alignParentBottom="true"
         android:layout_marginLeft="100dp" />
     <ImageButton
@@ -102,7 +101,7 @@
         android:layout_alignParentTop="false"
         android:layout_alignParentStart="true"
         android:layout_gravity="center_horizontal|bottom"
-        android:layout_marginBottom="280dp"
+        android:layout_marginBottom="360dp"
         android:layout_alignParentBottom="true"
         android:layout_marginLeft="200dp" />
     <RelativeLayout
@@ -122,15 +121,10 @@
             android:layout_height="match_parent"
             />
         <com.github.mikephil.charting.charts.LineChart
-            android:id="@+id/chart_tiempo"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            />
-        <com.github.mikephil.charting.charts.LineChart
             android:id="@+id/chart_intensidad"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            />
+            android:layout_alignParentTop="true" />
     </RelativeLayout>
 
 </RelativeLayout>

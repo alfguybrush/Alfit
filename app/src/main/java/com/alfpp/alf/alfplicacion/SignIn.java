@@ -1,5 +1,7 @@
 package com.alfpp.alf.alfplicacion;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -16,12 +18,13 @@ import java.util.Calendar;
 
 public class SignIn extends ActionBarActivity {
     int Sexo;
-
+    int id;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
-        Button SigIn = (Button) findViewById(R.id.button_aceptar);
+        final Button SigIn = (Button) findViewById(R.id.button_aceptar);
+
 
 
         SigIn.setOnClickListener(new View.OnClickListener() {
@@ -36,7 +39,7 @@ public class SignIn extends ActionBarActivity {
                 String SexoString = spinner.getSelectedItem().toString();
                 Toast toast = Toast.makeText(getApplicationContext(), SexoString, Toast.LENGTH_SHORT);
                 toast.show();
-
+                id = -1;
                 EditText text = (EditText)findViewById(R.id.editName);
                 Nombre = text.getText().toString();
 
@@ -60,17 +63,50 @@ public class SignIn extends ActionBarActivity {
                 //Introduccion en la Base de Datos.
 
                 BaseDatosAlfpp BD = new BaseDatosAlfpp(getApplicationContext());
+                //id = BD.insertaUsuario(Nombre,Apellidos,edad,peso,usuario,0);
 
-                int id =BD.insertaUsuario(Nombre, Apellidos, edad, peso ,usuario,Sexo);
+                CharSequence colors[] = new CharSequence[] {"Calcular (carrera 12 minutos)", "Que es Vo2?", "Vo2 Automatico"};
 
-                Toast toast1;
-                toast1 = Toast.makeText(getApplicationContext(),Double.toString(id), Toast.LENGTH_SHORT);
-                toast1.show();
-                Intent intent = new Intent(SignIn.this, MainActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        });
+                AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
+                builder.setTitle("Desea calcular su Vo2");
+                builder.setItems(colors, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Intent intent = null;
+
+                                switch (which) {
+                                    case 0:
+                                        intent = new Intent(SignIn.this, Navegacion.class);
+                                        intent.putExtra("Pantalla", "COOPER");
+                                        intent.putExtra("Opcion", 2);
+
+                                        break;
+
+                                    case 1:
+                                        intent = new Intent(SignIn.this, Navegacion.class);
+                                        intent.putExtra("Pantalla", "Que es Vo2");
+                                        intent.putExtra("Opcion", 4);
+                                        break;
+
+                                    case 2:
+                                        intent = new Intent(SignIn.this, MainActivity.class);
+
+                                        break;
+
+                                }
+                                if (intent != null) {
+                                    intent.putExtra("idUsuario", id);
+                                    startActivity(intent);
+                                    finish();
+                                }
+                            }
+                        }
+
+                );
+                    builder.show();
+
+                }
+            });
     }
 
     @Override

@@ -62,9 +62,27 @@ public class Resumen extends ActionBarActivity {
         TextView tv_duracion = (TextView) findViewById(R.id.tv_duracion_resumen);
         TextView tv_intensidad = (TextView) findViewById(R.id.tv_intenmedia_resumen);
         TextView tv_velocidad = (TextView) findViewById(R.id.tv_velocmdia_resumen);
+        TextView tv_distancia = (TextView) findViewById(R.id.tv_distancia_resumen);
 
         tv_fecha.setText(actividad.getFecha());
-        tv_duracion.setText(Double.toString(actividad.getDuracion()));
+        double tiempo = actividad.getDuracion();
+        String Stiempo="";
+        int horas = (int)tiempo/3600;
+        if(horas!=0){
+            Stiempo=Stiempo+horas+":";
+            tiempo = tiempo-horas*3600;
+        }
+        int minutos = (int) tiempo/60;
+        Stiempo = Stiempo+minutos+":";
+        int segundos = (int) tiempo -minutos*60;
+        Stiempo = Stiempo+segundos;
+        tv_duracion.setText(Stiempo);
+        tv_velocidad.setText(Double.toString(actividad.getVelocidadMedia()));
+        tv_intensidad.setText(Double.toString(actividad.getIntensidadMedia()));
+        tv_distancia.setText(Double.toString(actividad.getDistancia()));
+        tv_intensidad.setText(Double.toString(actividad.getIntensidadMedia()));
+
+
 
         //ArrayVelocidad ArrayIntensidad ArrayAltura
         ArrayList<Double> velocidad =(ArrayList<Double>) bundle.getSerializable("ArrayVelocidad");
@@ -142,9 +160,9 @@ public class Resumen extends ActionBarActivity {
         ll1.setLineWidth(10f);
         ll1.enableDashedLine(10f, 10f, 0f);
         ll1.setLabelPosition(LimitLine.LimitLabelPosition.POS_RIGHT);
-        ll1.setTextSize(20f);
+        ll1.setTextSize(10f);
 
-        LimitLine ll2 = new LimitLine(-30f, "Lower Limit");
+        LimitLine ll2 = new LimitLine(0f, "Lower Limit");
         ll2.setLineWidth(4f);
         ll2.enableDashedLine(10f, 10f, 0f);
         ll2.setLabelPosition(LimitLine.LimitLabelPosition.POS_RIGHT);
@@ -155,7 +173,7 @@ public class Resumen extends ActionBarActivity {
         leftAxis.addLimitLine(ll1);
         leftAxis.addLimitLine(ll2);
         leftAxis.setAxisMaxValue(1600F);
-        leftAxis.setAxisMinValue(-50f);
+        leftAxis.setAxisMinValue(0f);
         leftAxis.setStartAtZero(false);
         //leftAxis.setYOffset(20f);
         leftAxis.enableGridDashedLine(10f, 10f, 0f);
@@ -257,7 +275,7 @@ public class Resumen extends ActionBarActivity {
         //set1.setColor(Color.BLACK);
         //.setCircleColor(Color.BLACK);
         set1.setLineWidth(5f);
-        set1.setCircleSize(10f);
+        set1.setCircleSize(2f);
         set1.setValueTextSize(20f);
         set1.setFillAlpha(65);
         set1.setDrawCubic(true);

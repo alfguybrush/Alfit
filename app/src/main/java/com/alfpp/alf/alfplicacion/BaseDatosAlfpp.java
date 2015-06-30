@@ -29,7 +29,8 @@ public class BaseDatosAlfpp extends SQLiteOpenHelper{
         db.execSQL("CREATE TABLE usuario(_id INTEGER PRIMARY KEY AUTOINCREMENT, sexo INTEGER, nombre TEXT, apellidos TEXT, edad INTEGER, peso DOUBLE, usuario TEXT, Vo2 DOUBLE, numActividades INTEGER) ");
         db.execSQL("CREATE TABLE carrera(_id INTEGER PRIMARY KEY AUTOINCREMENT ,idUsuario INTEGER," +
                 " velocMedia DOUBLE, intensidadMedia DOUBLE," +
-                " fecha DATE, duracion DOUBLE, distancia DOUBLE) ");
+                " fecha DATE, duracion DOUBLE, distancia DOUBLE," +
+                "calorias Double) ");
 
     }
     @Override
@@ -37,12 +38,13 @@ public class BaseDatosAlfpp extends SQLiteOpenHelper{
         db.execSQL("drop table if exists usuario");
         db.execSQL("CREATE TABLE usuario(_id INTEGER PRIMARY KEY AUTOINCREMENT," +
                 " sexo INTEGER, nombre TEXT, apellidos TEXT, edad INTEGER, peso DOUBLE, usuario TEXT, Vo2 DOUBLE) ");
-        db.execSQL("CREATE TABLE carrera(_id INTEGER PRIMARY KEY AUTOINCREMENT ," +
-                "idUsuario INTEGER, velocMedia DOUBLE, intensidadMedia DOUBLE, " +
-                "fecha TEXT, duracion DOUBLE, distancia DOUBLE) ");   }
+        db.execSQL("CREATE TABLE carrera(_id INTEGER PRIMARY KEY AUTOINCREMENT ,idUsuario INTEGER," +
+                " velocMedia DOUBLE, intensidadMedia DOUBLE," +
+                " fecha DATE, duracion DOUBLE, distancia DOUBLE," +
+                "calorias Double) ");   }
 
 
-    public int insertaActividad(Date fecha,int idUsuario, double tiempo, double distancia, double intensidadMedia,double velocMedia){
+    public int insertaActividad(Date fecha,int idUsuario, double tiempo, double distancia, double intensidadMedia,double velocMedia, double calorias){
         int idCarrera=0;
         boolean valido;
         SQLiteDatabase db = getWritableDatabase();
@@ -54,6 +56,7 @@ public class BaseDatosAlfpp extends SQLiteOpenHelper{
             values.put("fecha",fecha.toString());
             values.put("duracion",tiempo);
             values.put("distancia",distancia);
+            values.put("calorias",calorias);
             idCarrera = (int) db.insert("carrera",null,values);
             valido = true;
         }else{

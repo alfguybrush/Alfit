@@ -537,7 +537,7 @@ public class Runalftic extends ActionBarActivity
             velMedia = getMedia(arrayVelocidad);
             double intenMedia = getMedia(arrayIntensidad);
             tiempo = elapsedMillis / 1000;
-            int idCarrera = BD.insertaActividad(hoy,id,tiempo,distanciaTotal,intenMedia,velMedia);
+            int idCarrera = BD.insertaActividad(hoy,id,tiempo,distanciaTotal,intenMedia,velMedia,caloriasTotal);
             Toast toast1;
             toast1 = Toast.makeText(getApplicationContext(),Double.toString(idCarrera), Toast.LENGTH_SHORT);
             toast1.show();
@@ -560,8 +560,9 @@ public class Runalftic extends ActionBarActivity
     private double getMedia(ArrayList<Double> valor){
         double media= 0.0;
         for (int i= 0; i< valor.size(); i++){
-            media = (media +valor.get(i))/(i+1);
+            media = (media +valor.get(i));
         }
+        media = media/valor.size();
         return media;
     }
 

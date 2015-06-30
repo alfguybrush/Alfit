@@ -78,7 +78,7 @@ public class Perfil extends Fragment {
         String encodedText = Html.fromHtml("Edad: " + aux + "a&ntilde;os").toString();
         tvedad.setText(encodedText);
         aux = Double.toString(user.getVo2());
-        tvVo2.setText("Vo2 Mac ="+aux);
+        tvVo2.setText("Vo2 Max ="+aux);
         tvVo2.setOnClickListener(new View.OnClickListener() {
 
             @Override
