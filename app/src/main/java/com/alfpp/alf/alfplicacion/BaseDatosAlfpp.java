@@ -6,11 +6,10 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import java.util.Date;
-
 /**
  * Created by Alf on 02/06/2015.
  */
+@SuppressWarnings("all")
 public class BaseDatosAlfpp extends SQLiteOpenHelper{
     private static final int VERSION_BASEDATOS = 1;
 
@@ -44,7 +43,7 @@ public class BaseDatosAlfpp extends SQLiteOpenHelper{
                 "calorias Double) ");   }
 
 
-    public int insertaActividad(Date fecha,int idUsuario, double tiempo, double distancia, double intensidadMedia,double velocMedia, double calorias){
+    public int insertaActividad(String fecha,int idUsuario, double tiempo, double distancia, double intensidadMedia,double velocMedia, double calorias){
         int idCarrera=0;
         boolean valido;
         SQLiteDatabase db = getWritableDatabase();
@@ -53,7 +52,7 @@ public class BaseDatosAlfpp extends SQLiteOpenHelper{
             values.put("idUsuario",idUsuario);
             values.put("velocMedia",velocMedia);
             values.put("intensidadMedia",intensidadMedia);
-            values.put("fecha",fecha.toString());
+            values.put("fecha",fecha);
             values.put("duracion",tiempo);
             values.put("distancia",distancia);
             values.put("calorias",calorias);

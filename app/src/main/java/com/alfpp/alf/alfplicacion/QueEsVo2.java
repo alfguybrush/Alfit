@@ -22,7 +22,7 @@ public class QueEsVo2 extends Fragment {
         WebView mWebView =(WebView) v.findViewById(R.id.webView);
         mWebView.getSettings().setLoadWithOverviewMode(true);
         mWebView.getSettings().setUseWideViewPort(true);
-        mWebView.loadUrl("file:///android_asset/main.html");
+        mWebView.loadUrl("file:///android_asset/index.html");
         return v;
     }
 

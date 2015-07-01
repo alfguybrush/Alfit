@@ -133,7 +133,7 @@
 
                         <ImageButton
                             android:background="@drawable/boton_redondofondo"
-                            android:src="@drawable/ic_cast_dark"
+                            android:src="@drawable/stop"
                             android:scaleType="center"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -143,7 +143,7 @@
                             android:layout_gravity="center_horizontal|bottom"
                             android:gravity="center"
                             style="@style/button_text"
-                            android:elevation="1dp"
+                            android:elevation="15dp"
                             android:layout_alignBottom="@+id/mapa"
                             android:layout_centerHorizontal="true" />
 

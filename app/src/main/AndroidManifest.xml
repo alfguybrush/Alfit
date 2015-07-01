@@ -52,10 +52,6 @@
             android:label="@string/title_activity_sign_in" >
         </activity>
         <activity
-            android:name=".Prueba"
-            android:label="@string/title_activity_prueba" >
-        </activity>
-        <activity
             android:name=".Navegacion"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:label="@string/title_activity_drawer"
@@ -71,14 +67,6 @@
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:label="@string/title_activity_runalftic"
             android:screenOrientation="portrait" >
-        </activity>
-        <activity
-            android:name=".PruebaGrafica"
-            android:label="@string/title_activity_prueba_grafica" >
-        </activity>
-        <activity
-            android:name=".graf"
-            android:label="@string/title_activity_graf" >
         </activity>
         <activity
             android:name=".Resumen"

@@ -23,21 +23,23 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
-
+@SuppressWarnings("all")
 public class Resumen extends ActionBarActivity {
     LineChart chartAltura,chartIntensidad;
     HorizontalBarChart chartVelocidad;
     HorizontalBarChart chartTiempo;
-    int idCarrera;
+    int idCarrera, idUsuario;
     BaseDatosAlfpp BD;
+    DecimalFormat df;
 
     @Override
     public void onBackPressed()
     {
         Intent intent = new Intent(Resumen.this, Runalftic.class);
-        intent.putExtra("com.alfpp.alf.alfplicacion.Usuario", "defecto");
+        intent.putExtra("idUsuario", idUsuario);
         finish();
         startActivity(intent);
 
@@ -50,11 +52,13 @@ public class Resumen extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_resumen);
         Bundle bundle = getIntent().getExtras();
+        df = new DecimalFormat("0.00");
         BD = new BaseDatosAlfpp(getApplicationContext());
         Actividad actividad;
-        idCarrera= bundle.getInt("idCarrera");
+        idCarrera = bundle.getInt("idCarrera");
+        idUsuario = bundle.getInt("idUsuario");
         Toast toast1;
-        toast1 = Toast.makeText(getApplicationContext(),Double.toString(idCarrera), Toast.LENGTH_SHORT);
+        toast1 = Toast.makeText(getApplicationContext(), Double.toString(idCarrera), Toast.LENGTH_SHORT);
         toast1.show();
         actividad = BD.getActividad(idCarrera);
 
@@ -66,34 +70,42 @@ public class Resumen extends ActionBarActivity {
 
         tv_fecha.setText(actividad.getFecha());
         double tiempo = actividad.getDuracion();
-        String Stiempo="";
-        int horas = (int)tiempo/3600;
-        if(horas!=0){
-            Stiempo=Stiempo+horas+":";
-            tiempo = tiempo-horas*3600;
+        String Stiempo = "";
+        int horas = (int) tiempo / 3600;
+        if (horas != 0) {
+            Stiempo = Stiempo + horas + ":";
+            tiempo = tiempo - horas * 3600;
         }
-        int minutos = (int) tiempo/60;
-        Stiempo = Stiempo+minutos+":";
-        int segundos = (int) tiempo -minutos*60;
-        Stiempo = Stiempo+segundos;
+        int minutos = (int) tiempo / 60;
+        Stiempo = Stiempo + minutos + ":";
+        int segundos = (int) tiempo - minutos * 60;
+        Stiempo = Stiempo + segundos;
         tv_duracion.setText(Stiempo);
-        tv_velocidad.setText(Double.toString(actividad.getVelocidadMedia()));
-        tv_intensidad.setText(Double.toString(actividad.getIntensidadMedia()));
-        tv_distancia.setText(Double.toString(actividad.getDistancia()));
-        tv_intensidad.setText(Double.toString(actividad.getIntensidadMedia()));
-
+        String auxiliar;
+        auxiliar = df.format(actividad.getVelocidadMedia());
+        tv_velocidad.setText(auxiliar + "km/h");
+        auxiliar = df.format(actividad.getIntensidadMedia());
+        tv_intensidad.setText(auxiliar + "%");
+        auxiliar = df.format(actividad.getDistancia());
+        tv_distancia.setText(auxiliar + "km");
+        auxiliar = df.format(actividad.getDuracion());
+        tv_duracion.setText(auxiliar + "seg");
 
 
         //ArrayVelocidad ArrayIntensidad ArrayAltura
-        ArrayList<Double> velocidad =(ArrayList<Double>) bundle.getSerializable("ArrayVelocidad");
-        ArrayList<Double> altura =(ArrayList<Double>) bundle.getSerializable("ArrayAltura");
-        ArrayList<Double> intensidad =(ArrayList<Double>) bundle.getSerializable("ArrayIntensidad");
-        chartVelocidad = (HorizontalBarChart)findViewById(R.id.chart_velocidad);
+        ArrayList<Double> velocidad = (ArrayList<Double>) bundle.getSerializable("ArrayVelocidad");
+        ArrayList<Double> altura = (ArrayList<Double>) bundle.getSerializable("ArrayAltura");
+        ArrayList<Double> intensidad = (ArrayList<Double>) bundle.getSerializable("ArrayIntensidad");
+        ArrayList<Double> arrayTiempo = (ArrayList<Double>) bundle.getSerializable("ArrayTiempo");
+        chartVelocidad = (HorizontalBarChart) findViewById(R.id.chart_velocidad);
         chartAltura = (LineChart) findViewById(R.id.chart_altura);
         chartIntensidad = (LineChart) findViewById(R.id.chart_intensidad);
+        chartTiempo = (HorizontalBarChart) findViewById(R.id.chart_tiempo);
         setDataBarChartVeloc(velocidad);
         setDataLineAltura(altura);
         setDataLineIntensidad(intensidad);
+        setDataBarChartTiempo(arrayTiempo);
+
 
         chartAltura.setVisibility(View.INVISIBLE);
         chartIntensidad.setVisibility(View.INVISIBLE);
@@ -116,6 +128,8 @@ public class Resumen extends ActionBarActivity {
                 chartVelocidad.setVisibility(View.VISIBLE);
                 chartAltura.setVisibility(View.INVISIBLE);
                 chartIntensidad.setVisibility(View.INVISIBLE);
+                chartTiempo.setVisibility(View.INVISIBLE);
+                chartVelocidad.animateX(1000);
             }
 
         });
@@ -125,6 +139,8 @@ public class Resumen extends ActionBarActivity {
                 chartVelocidad.setVisibility(View.INVISIBLE);
                 chartAltura.setVisibility(View.VISIBLE);
                 chartIntensidad.setVisibility(View.INVISIBLE);
+                chartTiempo.setVisibility(View.INVISIBLE);
+                chartAltura.animateX(1000);
 
             }
 
@@ -135,10 +151,22 @@ public class Resumen extends ActionBarActivity {
                 chartVelocidad.setVisibility(View.INVISIBLE);
                 chartAltura.setVisibility(View.INVISIBLE);
                 chartIntensidad.setVisibility(View.VISIBLE);
+                chartTiempo.setVisibility(View.INVISIBLE);
+                chartIntensidad.animateX(10000);
             }
 
         });
+        boton_tiempo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                chartVelocidad.setVisibility(View.INVISIBLE);
+                chartAltura.setVisibility(View.INVISIBLE);
+                chartIntensidad.setVisibility(View.INVISIBLE);
+                chartTiempo.setVisibility(View.VISIBLE);
+                chartTiempo.animateY(1000);
+            }
 
+        });
 
 
         // Setting Custom Color for the Scroll bar indicator of the Tab View
@@ -222,7 +250,7 @@ public class Resumen extends ActionBarActivity {
     private void setDataLineIntensidad(ArrayList<Double> arrayValores){
 
         chartIntensidad.setDrawGridBackground(false);
-        chartIntensidad.setDescription("Gráfica ejemplo Altura");
+        chartIntensidad.setDescription("Gráfica Altura");
 
         chartIntensidad.setHighlightEnabled(true);
         chartIntensidad.setTouchEnabled(true);
@@ -247,7 +275,7 @@ public class Resumen extends ActionBarActivity {
         leftAxis.removeAllLimitLines(); // reset all limit lines to avoid overlapping lines
         leftAxis.addLimitLine(ll1);
         leftAxis.addLimitLine(ll2);
-        leftAxis.setAxisMaxValue(100F);
+        leftAxis.setAxisMaxValue(120F);
         leftAxis.setAxisMinValue(0f);
         leftAxis.setStartAtZero(false);
         //leftAxis.setYOffset(20f);
@@ -310,6 +338,30 @@ public class Resumen extends ActionBarActivity {
         chartVelocidad.setDescriptionTextSize(20.5f);
         chartVelocidad.setScrollBarSize(5);
         chartVelocidad.animateY(1000);
+
+
+    }
+    private void setDataBarChartTiempo(ArrayList<Double> arrayValores){
+        ArrayList<BarEntry> entries = new ArrayList<>();
+        ArrayList<String> labels = new ArrayList<String>();
+        Double minutos, segundos,tiempo, resultado;
+        DecimalFormat df = new DecimalFormat("00");
+
+        for (int i = 0; i<arrayValores.size(); i++ ) {
+            tiempo = arrayValores.get(i);
+            minutos = tiempo/60;
+
+            entries.add(new BarEntry(minutos.floatValue(), i));
+            labels.add("Kilometro "+Integer.toString(i));
+        }
+        BarDataSet dataSet = new BarDataSet(entries,"Tiempo");
+        BarData data = new BarData(labels, dataSet);
+        data.setValueTextSize(12f);
+        chartTiempo.setData(data);
+        chartTiempo.setDescription("Minutos por Kilometro");
+        chartTiempo.setDescriptionTextSize(20.5f);
+        chartTiempo.setScrollBarSize(5);
+
 
 
     }

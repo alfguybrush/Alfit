@@ -37,9 +37,6 @@ public class Navegacion extends ActionBarActivity
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drawer);
-        Toast toast;
-        toast = Toast.makeText(getApplicationContext(), "1", Toast.LENGTH_SHORT);
-        //toast.show();
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);

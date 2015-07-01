@@ -64,6 +64,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/bt_grafica_intensidad"
+        android:src="@drawable/intensidad"
         android:elevation="15dp"
         android:layout_marginBottom="360dp"
         android:layout_alignParentBottom="true"
@@ -75,6 +76,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/bt_grafica_velocidad"
+        android:src="@drawable/velocidad"
         android:elevation="15dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
@@ -85,6 +87,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/bt_grafica_altura"
+        android:src="@drawable/mountain2"
         android:elevation="15dp"
         android:layout_alignParentTop="false"
         android:layout_alignParentStart="true"
@@ -97,6 +100,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/bt_grafica_tiempo"
+        android:src="@drawable/tiempo"
         android:elevation="15dp"
         android:layout_alignParentTop="false"
         android:layout_alignParentStart="true"
@@ -115,6 +119,11 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
              />
+        <com.github.mikephil.charting.charts.HorizontalBarChart
+            android:id="@+id/chart_tiempo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
         <com.github.mikephil.charting.charts.LineChart
             android:id="@+id/chart_altura"
             android:layout_width="match_parent"

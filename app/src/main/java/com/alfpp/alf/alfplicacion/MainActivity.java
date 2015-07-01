@@ -15,31 +15,78 @@ public class MainActivity extends Activity implements View.OnClickListener {
     TextView titulo;
     BaseDatosAlfpp BD;
     Usuario user;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         BD = new BaseDatosAlfpp(getApplicationContext());
         ImageButton Inicio = (ImageButton) findViewById(R.id.imageButton);
+        CharSequence colors[] = new CharSequence[]{"red", "green", "blue", "black"};
+/*
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Pick a color");
+        builder.setItems(colors, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Intent intent = null;
+
+                switch (which) {
+                    case 0:
+                        intent = new Intent(MainActivity.this, Navegacion.class);
+                        intent.putExtra("Pantalla", "COOPER");
+                        intent.putExtra("Opcion", 2);
+
+                        break;
+
+                    case 1:
+                        intent = new Intent(MainActivity.this, Navegacion.class);
+                        intent.putExtra("Pantalla", "Que es Vo2");
+                        intent.putExtra("Opcion", 4);
+                        break;
+
+                    case 2:
+                        intent = new Intent(MainActivity.this, MainActivity.class);
+
+                        break;
+
+                }
+                if (intent != null) {
+                    intent.putExtra("idUsuario", 1);
+                    startActivity(intent);
+                    finish();
+                }
+            }
+        });
+        builder.show();
+        */
         Inicio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
+
+            }
+
+        });
+
+        findViewById(R.id.imageButton).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 user = BD.getUsuario(1);
                 if (user == null) {
                     Intent intent = new Intent(MainActivity.this, SignIn.class);
                     startActivity(intent);
                     finish();
-                }else{
+                } else {
                     Intent intent = new Intent(MainActivity.this, Runalftic.class);
 
-                    intent.putExtra("Usuario",user);
-                    intent.putExtra("idUsuario",1);
+                    intent.putExtra("Usuario", user);
+                    intent.putExtra("idUsuario", 1);
                     startActivity(intent);
                     finish();
                 }
-            }
 
+            }
         });
 
     }
